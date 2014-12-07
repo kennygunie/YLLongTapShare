@@ -10,11 +10,13 @@
 
 @interface YLShareButtonView : UIView
 
-@property (nonatomic, strong, readonly) UIImage* shareIcon;
-@property (nonatomic, copy, readonly) NSString* shareTitle;
-@property (nonatomic, strong) UIColor *tintColor;
-
-- (id)initWithIcon:(UIImage*)icon andTitle:(NSString*)title;
+@property (nonatomic, readonly) UIImage* shareIcon;
+@property (nonatomic, readonly) NSString* shareTitle;
+@property (nonatomic, readonly) NSString *doneTitle;
+@property (nonatomic) UIColor *tintColor;
+- (id)initWithIcon:(UIImage*)icon
+             title:(NSString*)title
+         doneTitle:(NSString*)doneTitle;
 
 - (void)showAnimationWithDelay:(CGFloat)delay;
 - (void)animateToDoneWithHandler:(void(^)())doneBlock;

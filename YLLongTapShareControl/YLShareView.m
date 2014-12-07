@@ -26,9 +26,9 @@
 
 @interface YLShareView()
 
-@property (nonatomic, assign, readwrite) YLShareViewState state;
+@property (nonatomic, readwrite) YLShareViewState state;
 //@property (nonatomic, copy) SelectedHandler completionHandler;
-
+@property (nonatomic, readwrite) NSString *doneTitle;
 @end
 
 @implementation YLShareView {
@@ -48,6 +48,11 @@
 }
 
 - (instancetype)initWithShareItems:(NSArray*)shareItems {
+    return [self initWithShareItems:shareItems doneTitle:@"Done !"];
+}
+
+- (instancetype)initWithShareItems:(NSArray*)shareItems
+                         doneTitle:(NSString *)doneTitle{
     self = [self initWithFrame:CGRectMake(0, 0, 60, 60)];
     if (self) {
         _shareBtns = [NSMutableArray array];
@@ -57,6 +62,7 @@
         _preventSlide = NO;
         _isDismissed = NO;
         _shareItems = shareItems;
+        self.doneTitle = doneTitle;
         [self createAllShareBtnsWithShareItems:shareItems];
     }
     
@@ -78,7 +84,9 @@
         p.y = roundf(-distance * sinf(fan) + self.bounds.size.height/2);
         
         CGRect frame = CGRectMake(p.x-shareSize/2, p.y-shareSize/2, shareSize, shareSize);
-        YLShareButtonView* view = [[YLShareButtonView alloc] initWithIcon:item.icon andTitle:item.title];
+        YLShareButtonView* view = [[YLShareButtonView alloc] initWithIcon:item.icon
+                                                                    title:item.title
+                                                                doneTitle:self.doneTitle];
         view.tintColor = _tintColor;
         view.frame = frame;
         [self addSubview:view];

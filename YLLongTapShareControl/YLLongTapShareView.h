@@ -11,6 +11,7 @@
 
 @interface YLLongTapShareView : UIView
 
+@property (nonatomic) NSString *doneTitle;
 @property (nonatomic, weak) id<YLLongTapShareDelegate> delegate;
 
 - (void)addShareItem:(YLShareItem*)item;

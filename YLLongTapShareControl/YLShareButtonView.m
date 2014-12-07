@@ -13,8 +13,9 @@
 
 @interface YLShareButtonView()
 
-@property (nonatomic, strong, readwrite) UIImage* shareIcon;
-@property (nonatomic, copy, readwrite) NSString* shareTitle;
+@property (nonatomic, readwrite) UIImage* shareIcon;
+@property (nonatomic, readwrite) NSString* shareTitle;
+@property (nonatomic, readwrite) NSString *doneTitle;
 @property (nonatomic, copy) void(^doneHandler)();
 
 @end
@@ -30,13 +31,16 @@
     BOOL            _isDone;
 }
 
-- (id)initWithIcon:(UIImage*)icon andTitle:(NSString*)title
+- (id)initWithIcon:(UIImage*)icon
+             title:(NSString*)title
+         doneTitle:(NSString*)doneTitle
 {
     self = [super initWithFrame:CGRectMake(0, 0, 80, 80)];
     if (self) {
         // Initialization code
-        _shareIcon = icon;
-        _shareTitle = title;
+        self.shareIcon = icon;
+        self.shareTitle = title;
+        self.doneTitle = doneTitle;
         _isSelected = NO;
         _isDone = NO;
         [self _setup];
@@ -75,7 +79,7 @@
     
     _doneLabel = [[UILabel alloc] init];
     _doneLabel.textAlignment = NSTextAlignmentCenter;
-    _doneLabel.text = @"Voté !";
+    _doneLabel.text = self.doneTitle;
     _doneLabel.hidden = YES;
     _doneLabel.font = [UIFont systemFontOfSize:14];
     _doneLabel.textColor = _tintColor;

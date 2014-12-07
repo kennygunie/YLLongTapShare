@@ -11,8 +11,8 @@
 
 @interface YLLongTapShareView ()
 
-@property (nonatomic) NSMutableArray *shareItems;
 @property (nonatomic) YLShareView* shareView;
+@property (nonatomic) NSMutableArray *shareItems;
 
 @end
 
@@ -39,7 +39,8 @@
     {
         if (touch) {
             CGPoint touchPoint = [touch locationInView:self];
-            self.shareView = [[YLShareView alloc] initWithShareItems:self.shareItems];
+            self.shareView = [[YLShareView alloc] initWithShareItems:self.shareItems
+                                                           doneTitle:self.doneTitle];
             if ([self.delegate respondsToSelector:@selector(colorOfShareView)]) {
                 self.shareView.tintColor = [self.delegate colorOfShareView];
             }
