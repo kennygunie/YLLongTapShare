@@ -29,11 +29,9 @@ typedef void (^SelectedHandler)(NSUInteger index, YLShareItem* item);
 @property (nonatomic, strong) UIColor *tintColor;
 @property (nonatomic, assign, readonly) YLShareViewState state;
 
-- (id)initWithShareItems:(NSArray*)shareItems;
-
-- (void)showShareViewInView:(UIView*)view at:(CGPoint)point withCompletion:(SelectedHandler)handler;
-- (void)dismissShareView;
-
+- (instancetype)initWithShareItems:(NSArray*)shareItems;
+- (void)showShareViewInView:(UIView*)view at:(CGPoint)point;
+- (void)dismissWithCompletion:(SelectedHandler)handler;
 /*
  *  point should be in the coordinate of current view
  */

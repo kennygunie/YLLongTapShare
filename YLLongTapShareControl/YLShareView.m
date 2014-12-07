@@ -27,7 +27,7 @@
 @interface YLShareView()
 
 @property (nonatomic, assign, readwrite) YLShareViewState state;
-@property (nonatomic, copy) SelectedHandler completionHandler;
+//@property (nonatomic, copy) SelectedHandler completionHandler;
 
 @end
 
@@ -36,7 +36,7 @@
     NSMutableArray*     _shareBtns;
     YLShareButtonView*  _selectedView;
     CGFloat             _avgAng;
-    NSTimer*            _selectTimer;
+    //NSTimer*            _selectTimer;
     
     BOOL                _isDone;
     BOOL                _isDismissed;
@@ -46,7 +46,7 @@
     CAShapeLayer*       _btnLayer;
 }
 
-- (id)initWithShareItems:(NSArray*)shareItems {
+- (instancetype)initWithShareItems:(NSArray*)shareItems {
     self = [self initWithFrame:CGRectMake(0, 0, 60, 60)];
     if (self) {
         _shareBtns = [NSMutableArray array];
@@ -63,9 +63,9 @@
 
 - (void)createAllShareBtnsWithShareItems:(NSArray*)shareItems {
     int n = (int)shareItems.count;
-    const CGFloat distance = 100.f;
-    const CGFloat shareSize = 60;
-    CGFloat angle = M_PI/(3*2); // using the angle of 3 items is best
+    const CGFloat distance = 130.f;
+    const CGFloat shareSize = 50.f;
+    CGFloat angle = M_PI/(5*2); // using the angle of 3 items is best
     _avgAng = angle;
     CGFloat startAngle = M_PI_2 - (n-1)*angle;
     for (int i=0; i<n; i++) {
@@ -154,12 +154,13 @@
     _btnLayer.position = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
 }
 
-- (void)showShareViewInView:(UIView*)view at:(CGPoint)point withCompletion:(SelectedHandler)handler {
+- (void)showShareViewInView:(UIView*)view at:(CGPoint)point {
+    
     
     self.center = point;
     [view addSubview:self];
     
-    static float scaleTime = 1.0;
+    static float scaleTime = 0.0;
     static float disappTime = 0.1;
     CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     animation.duration = scaleTime;
@@ -197,7 +198,6 @@
         self.state = YLShareViewOpened;
     }
     
-    self.completionHandler = handler;
 }
 
 -(void)pauseLayer:(CALayer*)layer
@@ -219,8 +219,8 @@
 
 - (void)dismissShareView {
     _isDismissed = YES;
-    [self pauseLayer:_layer];
-    [self pauseLayer:_btnLayer];
+    //[self pauseLayer:_layer];
+    //[self pauseLayer:_btnLayer];
     
     [UIView animateWithDuration:0.2 animations:^{
         self.alpha = 0;
@@ -267,23 +267,24 @@
             if (_selectedView != selectedView) {
                 if (_selectedView) {
                     [_selectedView resetAnimation];
+                    //_selectedView = nil;
                 }
                 _selectedView = selectedView;
                 [_selectedView selectAnimation];
-                [_selectTimer invalidate];
-                _selectTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(doneSelected) userInfo:nil repeats:NO];
+                //[_selectTimer invalidate];
+                //_selectTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(doneSelected) userInfo:nil repeats:NO];
             }
         } else {
             [_selectedView resetAnimation];
-            _selectedView = nil;
-            [_selectTimer invalidate];
-            _selectTimer = nil;
+            //_selectedView = nil;
+            //[_selectTimer invalidate];
+            //_selectTimer = nil;
         }
     } else {
         [_selectedView resetAnimation];
-        _selectedView = nil;
-        [_selectTimer invalidate];
-        _selectTimer = nil;
+        //_selectedView = nil;
+        //[_selectTimer invalidate];
+        //_selectTimer = nil;
     }
     CGVector vNorm = CGVectorNormalize(v);
     CGVector newV = CGVectorMultiply(vNorm, dis);
@@ -297,20 +298,37 @@
     }
 }
 
-- (void)doneSelected {
-    _isDone = YES;
-    NSUInteger i = [_shareBtns indexOfObject:_selectedView];
-    __weak typeof(self) weakSelf = self;
-    __weak typeof(_shareItems) weakShareItems = _shareItems;
-    [_selectedView animateToDoneWithHandler:^{
-        if (weakSelf.completionHandler) {
-            weakSelf.completionHandler(i, weakShareItems[i]);
-            weakSelf.completionHandler = nil;
-        }
-        [weakSelf dismissShareView];
-    }];
-    [_selectTimer invalidate];
-    _selectTimer = nil;
+//- (void)doneSelected {
+//    _isDone = YES;
+//    NSUInteger i = [_shareBtns indexOfObject:_selectedView];
+//    __weak typeof(self) weakSelf = self;
+//    __weak typeof(_shareItems) weakShareItems = _shareItems;
+//    [_selectedView animateToDoneWithHandler:^{
+//        if (weakSelf.completionHandler) {
+//            weakSelf.completionHandler(i, weakShareItems[i]);
+//            weakSelf.completionHandler = nil;
+//        }
+//        [weakSelf dismissShareView];
+//    }];
+//    [_selectTimer invalidate];
+//    _selectTimer = nil;
+//}
+
+- (void)dismissWithCompletion:(SelectedHandler)handler {
+    if (_selectedView) {
+        NSUInteger i = [_shareBtns indexOfObject:_selectedView];
+        [_selectedView animateToDoneWithHandler:^{
+            if (handler) {
+                handler(i, _shareItems[i]);
+            }
+            [self dismissShareView];
+        }];
+    } else {
+        [self dismissShareView];
+    }
+    
+    //[_selectTimer invalidate];
+    //_selectTimer = nil;
 }
 
 @end

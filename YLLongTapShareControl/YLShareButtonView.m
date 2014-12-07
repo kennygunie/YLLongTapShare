@@ -51,6 +51,11 @@
     _iconView = [[UIImageView alloc] initWithImage:_shareIcon];
     _iconView.contentMode = UIViewContentModeScaleAspectFit;
     _iconView.backgroundColor = [UIColor clearColor];
+    _iconView.layer.shadowColor = [UIColor blackColor].CGColor;
+    _iconView.layer.shadowOpacity = 0.8f;
+    _iconView.layer.shadowRadius = 1;
+    _iconView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+    
     _doneMarkLabel = [[UILabel alloc] init];
     _doneMarkLabel.text = @"✔︎";
     _doneMarkLabel.textColor = [UIColor grayColor];
@@ -58,6 +63,7 @@
     _doneMarkLabel.font = [UIFont systemFontOfSize:40];
     _doneMarkLabel.textAlignment = NSTextAlignmentCenter;
     _doneMarkLabel.hidden = YES;
+    
     _titleLabel = [[UILabel alloc] init];
     _titleLabel.text = _shareTitle;
     _titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -66,9 +72,10 @@
     _titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel.layer.opacity = 0;
     [_titleLabel sizeToFit];
+    
     _doneLabel = [[UILabel alloc] init];
     _doneLabel.textAlignment = NSTextAlignmentCenter;
-    _doneLabel.text = @"done!";
+    _doneLabel.text = @"Voté !";
     _doneLabel.hidden = YES;
     _doneLabel.font = [UIFont systemFontOfSize:14];
     _doneLabel.textColor = _tintColor;
@@ -82,8 +89,8 @@
     
     _iconLayer = [CAShapeLayer layer];
     _iconLayer.fillColor = [_tintColor colorWithAlphaComponent:0.0].CGColor;
-    _iconLayer.strokeColor = _tintColor.CGColor;
-    _iconLayer.lineWidth = 2;
+    //_iconLayer.strokeColor = _tintColor.CGColor;
+    _iconLayer.lineWidth = 0;
     _iconLayer.anchorPoint = CGPointMake(0.5, 0.5);
     _iconLayer.opacity = 1.0;
     [self.layer insertSublayer:_iconLayer above:_iconView.layer];
@@ -116,15 +123,16 @@
     
     _iconLayer.bounds = _iconView.bounds;
     _iconLayer.position = _iconView.center;
+   
     _iconLayer.path = [UIBezierPath bezierPathWithRoundedRect:_iconLayer.bounds cornerRadius:_iconLayer.bounds.size.width/2].CGPath;
 }
 
-- (void)animateToDoneWithHandler:(void(^)())doneBlock; {
+- (void)animateToDoneWithHandler:(void(^)())doneBlock {
     if (_isDone)
         return;
     _isDone = YES;
     
-    CAAnimation* animation = [YLShareAnimationHelper fillColorAnimationFrom:[self.tintColor colorWithAlphaComponent:0.5]
+    CAAnimation* animation = [YLShareAnimationHelper fillColorAnimationFrom:[self.tintColor colorWithAlphaComponent:0.0]
                                                                          to:self.tintColor
                                                                withDuration:0.5 andDelay:0
                                                           andTimingFunction:kCAMediaTimingFunctionEaseOut];
@@ -147,12 +155,12 @@
     
     
     CAAnimation* disappear = [YLShareAnimationHelper opacityAnimationFrom:1 to:0
-                                                             withDuration:0.2 andDelay:0.3
+                                                             withDuration:0.2 andDelay:0
                                                         andTimingFunction:kCAMediaTimingFunctionEaseIn];
     
     CAAnimation* moveUp = [YLShareAnimationHelper positionYAnimationFrom:_titleLabel.layer.position.y
                                                                       to:_titleLabel.layer.position.y-_titleLabel.frame.size.height
-                                                            withDuration:0.2 andDelay:0.3
+                                                            withDuration:0.2 andDelay:0
                                                        andTimingFunction:kCAMediaTimingFunctionEaseIn];
     
     CAAnimationGroup* titleAnimation = [YLShareAnimationHelper groupAnimationWithAnimations:@[ disappear, moveUp ]
@@ -163,16 +171,16 @@
     _doneLabel.hidden = NO;
     _doneLabel.layer.opacity = 0;
     CAAnimation* appear = [YLShareAnimationHelper opacityAnimationFrom:0 to:1
-                                                          withDuration:0.2 andDelay:0.3
+                                                          withDuration:0.2 andDelay:0
                                                      andTimingFunction:kCAMediaTimingFunctionEaseIn];
     
     CAAnimation* moveUp2 = [YLShareAnimationHelper positionYAnimationFrom:_doneLabel.layer.position.y+_doneLabel.frame.size.height
                                                                        to:_doneLabel.layer.position.y
-                                                             withDuration:0.2 andDelay:0.3
+                                                             withDuration:0.2 andDelay:0
                                                         andTimingFunction:kCAMediaTimingFunctionEaseIn];
     
     CAAnimationGroup* doneAnimation = [YLShareAnimationHelper groupAnimationWithAnimations:@[ appear, moveUp2 ]
-                                                                               andDuration:1.0];
+                                                                               andDuration:.5];
     doneAnimation.completion = ^(BOOL finished) {
         doneBlock();
     };
@@ -197,12 +205,12 @@
         return;
     
     _isSelected = YES;
-    CAAnimation* enlarge = [YLShareAnimationHelper scaleAnimationFrom:1 to:1.1
+    CAAnimation* enlarge = [YLShareAnimationHelper scaleAnimationFrom:1 to:1.3
                                                          withDuration:0.25 andDelay:0
                                                     andTimingFunction:kCAMediaTimingFunctionEaseOut andIsSpring:NO];
     
     CAAnimation* moveUp = [YLShareAnimationHelper positionYAnimationFrom:self.layer.position.y
-                                                                      to:self.layer.position.y-10
+                                                                      to:self.layer.position.y-15
                                                             withDuration:0.25 andDelay:0
                                                        andTimingFunction:kCAMediaTimingFunctionEaseOut];
     
@@ -212,11 +220,11 @@
     [self.layer addAnimation:selectAnimation forKey:@"selectAnimation"];
     
     
-    CAAnimation* blend = [YLShareAnimationHelper fillColorAnimationFrom:[self.tintColor colorWithAlphaComponent:0]
-                                                                     to:[self.tintColor colorWithAlphaComponent:0.5]
-                                                           withDuration:0.25 andDelay:0
-                                                      andTimingFunction:kCAMediaTimingFunctionEaseOut];
-    [_iconLayer addAnimation:blend forKey:@"blend"];
+//    CAAnimation* blend = [YLShareAnimationHelper fillColorAnimationFrom:[self.tintColor colorWithAlphaComponent:0]
+//                                                                     to:[self.tintColor colorWithAlphaComponent:0.5]
+//                                                           withDuration:0.25 andDelay:0
+//                                                      andTimingFunction:kCAMediaTimingFunctionEaseOut];
+//    [_iconLayer addAnimation:blend forKey:@"blend"];
     
     CAAnimation* titleOpacity = [YLShareAnimationHelper opacityAnimationFrom:0 to:1
                                                                 withDuration:0.25 andDelay:0
@@ -244,11 +252,11 @@
     
     [self.layer addAnimation:unSelectAnimation forKey:@"unSelectAnimation"];
     
-    CAAnimation* blend = [YLShareAnimationHelper fillColorAnimationFrom:[self.tintColor colorWithAlphaComponent:0.5]
-                                                                     to:[self.tintColor colorWithAlphaComponent:0]
-                                                           withDuration:0.25 andDelay:0
-                                                      andTimingFunction:kCAMediaTimingFunctionEaseOut];
-    [_iconLayer addAnimation:blend forKey:@"blend"];
+//    CAAnimation* blend = [YLShareAnimationHelper fillColorAnimationFrom:[self.tintColor colorWithAlphaComponent:0.5]
+//                                                                     to:[self.tintColor colorWithAlphaComponent:0]
+//                                                           withDuration:0.25 andDelay:0
+//                                                      andTimingFunction:kCAMediaTimingFunctionEaseOut];
+//    [_iconLayer addAnimation:blend forKey:@"blend"];
     
     
     CAAnimation* titleOpacity = [YLShareAnimationHelper opacityAnimationFrom:1 to:0

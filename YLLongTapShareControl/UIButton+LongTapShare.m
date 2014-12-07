@@ -70,12 +70,7 @@ const void* UIButtonShareDelegatesKey = &UIButtonShareDelegatesKey;
             if ([self.delegate respondsToSelector:@selector(colorOfShareView)]) {
                 shareView.tintColor = [self.delegate colorOfShareView];
             }
-            __weak UIButton* weakSelf = self;
-            [shareView showShareViewInView:self at:touchPoint withCompletion:^(NSUInteger index, YLShareItem *item) {
-                if ([weakSelf.delegate respondsToSelector:@selector(longTapShareView:didSelectShareTo:withIndex:)]) {
-                    [weakSelf.delegate longTapShareView:weakSelf didSelectShareTo:item withIndex:index];
-                }
-            }];
+             [shareView showShareViewInView:self at:touchPoint];
             self.shareView = shareView;
         }
     }
@@ -93,8 +88,11 @@ const void* UIButtonShareDelegatesKey = &UIButtonShareDelegatesKey;
 }
 
 - (void)longTapEnd:(UIButton*)button withEvent:(UIEvent*)event {
-    [self.shareView dismissShareView];
-    self.shareView = nil;
+    [self.shareView dismissWithCompletion:^(NSUInteger index, YLShareItem *item) {
+        if ([self.delegate respondsToSelector:@selector(longTapShareView:didSelectShareTo:withIndex:)]) {
+            [self.delegate longTapShareView:self didSelectShareTo:item withIndex:index];
+        }
+    }];
 }
 
 
