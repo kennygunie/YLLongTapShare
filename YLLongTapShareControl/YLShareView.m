@@ -40,6 +40,7 @@
     
     BOOL                _isDone;
     BOOL                _isDismissed;
+    BOOL                _preventSlide;
     
     CAShapeLayer*       _bgLayer;
     CAShapeLayer*       _layer;
@@ -53,6 +54,7 @@
         _state = YLShareViewUnopen;
         _selectedView = nil;
         _isDone = NO;
+        _preventSlide = NO;
         _isDismissed = NO;
         _shareItems = shareItems;
         [self createAllShareBtnsWithShareItems:shareItems];
@@ -161,24 +163,30 @@
     [view addSubview:self];
     
     static float scaleTime = 0.0;
-    static float disappTime = 0.1;
-    CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    animation.duration = scaleTime;
-    animation.fromValue = @(0);
-    animation.toValue = @(1);
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-    animation.fillMode = kCAFillModeForwards;
-    animation.removedOnCompletion = NO;
+    static float disappTime = 0.0;
+//    CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+//    animation.duration = scaleTime;
+//    animation.fromValue = @(0);
+//    animation.toValue = @(1);
+//    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+//    animation.fillMode = kCAFillModeForwards;
+//    animation.removedOnCompletion = NO;
+    
+//    CAAnimation* disappear = [YLShareAnimationHelper scaleAnimationFrom:1.0 to:0.01
+//                                                           withDuration:disappTime andDelay:scaleTime
+//                                                      andTimingFunction:kCAMediaTimingFunctionEaseOut andIsSpring:NO];
+    
+    
+//    CAAnimationGroup *group = [YLShareAnimationHelper groupAnimationWithAnimations:@[ animation, disappear ]
+//                                                                       andDuration:(scaleTime + disappTime)];
+//    [_layer addAnimation:group forKey:@"circleProgress"];
+    
     
     CAAnimation* disappear = [YLShareAnimationHelper scaleAnimationFrom:1.0 to:0.01
                                                            withDuration:disappTime andDelay:scaleTime
                                                       andTimingFunction:kCAMediaTimingFunctionEaseOut andIsSpring:NO];
-    
-    
-    CAAnimationGroup *group = [YLShareAnimationHelper groupAnimationWithAnimations:@[ animation, disappear ]
-                                                                       andDuration:(scaleTime + disappTime)];
-    [_layer addAnimation:group forKey:@"circleProgress"];
-    
+    [_layer addAnimation:disappear forKey:@"showBounceBackground"];
+
     
     CAAnimation* disappear2 = [YLShareAnimationHelper scaleAnimationFrom:0.01 to:1.0
                                                                     withDuration:0.8 andDelay:(scaleTime+disappTime)
@@ -188,7 +196,7 @@
                                                                withDuration:0.8 andDelay:(scaleTime+disappTime)
                                                           andTimingFunction:kCAMediaTimingFunctionEaseIn];
     
-    CAAnimationGroup *group2 = [YLShareAnimationHelper groupAnimationWithAnimations:@[ disappear2, showOpacity ]
+    CAAnimationGroup *group2 = [YLShareAnimationHelper groupAnimationWithAnimations:@[ disappear2, showOpacity]
                                                                         andDuration:(scaleTime + disappTime + 0.8)];
     [_bgLayer addAnimation:group2 forKey:@"showSlideBackground"];
     
@@ -200,34 +208,22 @@
     
 }
 
--(void)pauseLayer:(CALayer*)layer
-{
-    CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
-    layer.speed = 0.0;
-    layer.timeOffset = pausedTime;
-}
-
--(void)resumeLayer:(CALayer*)layer
-{
-    CFTimeInterval pausedTime = [layer timeOffset];
-    layer.speed = 1.0;
-    layer.timeOffset = 0.0;
-    layer.beginTime = 0.0;
-    CFTimeInterval timeSincePause = [layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
-    layer.beginTime = timeSincePause;
-}
-
-- (void)dismissShareView {
-    _isDismissed = YES;
-    //[self pauseLayer:_layer];
-    //[self pauseLayer:_btnLayer];
-    
-    [UIView animateWithDuration:0.2 animations:^{
-        self.alpha = 0;
-    } completion:^(BOOL finished) {
-        [self removeFromSuperview];
-    }];
-}
+//-(void)pauseLayer:(CALayer*)layer
+//{
+//    CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
+//    layer.speed = 0.0;
+//    layer.timeOffset = pausedTime;
+//}
+//
+//-(void)resumeLayer:(CALayer*)layer
+//{
+//    CFTimeInterval pausedTime = [layer timeOffset];
+//    layer.speed = 1.0;
+//    layer.timeOffset = 0.0;
+//    layer.beginTime = 0.0;
+//    CFTimeInterval timeSincePause = [layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
+//    layer.beginTime = timeSincePause;
+//}
 
 - (float)angleForCenterPoint:(CGPoint)center andPoint1:(CGPoint)p1 andPoint2:(CGPoint)p2 {
     if (CGPointEqualToPoint(center, p1) || CGPointEqualToPoint(center, p2))
@@ -241,11 +237,16 @@
 }
 
 - (void)slideTo:(CGPoint)point {
+    if (_preventSlide) {
+        return;
+    }
+    
     CGFloat radius = 20;
     CGPoint center = {self.bounds.size.width/2, self.bounds.size.height/2};
     CGVector v = CGVectorMakeWithPoints(center, point);
-    if (CGPointEqualToPoint(center, point))
+    if (CGPointEqualToPoint(center, point)) {
         return;
+    }
     CGFloat dis = CGVectorLength(v);
     if (dis >= radius) {
         dis = radius;
@@ -314,14 +315,27 @@
 //    _selectTimer = nil;
 //}
 
+- (void)dismissShareView {
+    _isDismissed = YES;
+    //[self pauseLayer:_layer];
+    //[self pauseLayer:_btnLayer];
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        self.alpha = 0;
+    } completion:^(BOOL finished) {
+        [self removeFromSuperview];
+    }];
+}
+
 - (void)dismissWithCompletion:(SelectedHandler)handler {
+    _preventSlide = YES;
     if (_selectedView) {
         NSUInteger i = [_shareBtns indexOfObject:_selectedView];
         [_selectedView animateToDoneWithHandler:^{
+            [self dismissShareView];
             if (handler) {
                 handler(i, _shareItems[i]);
             }
-            [self dismissShareView];
         }];
     } else {
         [self dismissShareView];

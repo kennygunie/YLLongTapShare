@@ -31,6 +31,10 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesBegan:touches withEvent:event];
+    if ([self.shareView superview]) {
+        return;
+    }
+    
     UITouch* touch = [[touches objectEnumerator] allObjects].firstObject;
     {
         if (touch) {
@@ -66,11 +70,7 @@
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesCancelled:touches withEvent:event];
-    [self.shareView dismissWithCompletion:^(NSUInteger index, YLShareItem *item) {
-        if ([self.delegate respondsToSelector:@selector(longTapShareView:didSelectShareTo:withIndex:)]) {
-            [self.delegate longTapShareView:self didSelectShareTo:item withIndex:index];
-        }
-    }];
+    [self.shareView dismissWithCompletion:NULL];
 }
 
 

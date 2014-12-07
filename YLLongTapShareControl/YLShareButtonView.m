@@ -132,12 +132,25 @@
         return;
     _isDone = YES;
     
+    CABasicAnimation* animation2 = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+    animation2.duration = 2.0;
+    animation2.fromValue = @(0);
+    animation2.toValue = @(1);
+    animation2.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    animation2.fillMode = kCAFillModeForwards;
+    animation2.removedOnCompletion = NO;
+    
+    
     CAAnimation* animation = [YLShareAnimationHelper fillColorAnimationFrom:[self.tintColor colorWithAlphaComponent:0.0]
                                                                          to:self.tintColor
                                                                withDuration:0.5 andDelay:0
                                                           andTimingFunction:kCAMediaTimingFunctionEaseOut];
     
-    [_iconLayer addAnimation:animation forKey:@"fillToWhite"];
+    CAAnimationGroup *group = [YLShareAnimationHelper groupAnimationWithAnimations:@[ animation2, animation ]
+                                                                       andDuration:2.0];
+    
+    
+    [_iconLayer addAnimation:group forKey:@"fillToWhite"];
     
     _doneMarkLabel.hidden = NO;
     _doneMarkLabel.layer.opacity = 0;
