@@ -56,8 +56,8 @@
     _iconView.contentMode = UIViewContentModeScaleAspectFit;
     _iconView.backgroundColor = [UIColor clearColor];
     _iconView.layer.shadowColor = [UIColor blackColor].CGColor;
-    _iconView.layer.shadowOpacity = 0.8f;
-    _iconView.layer.shadowRadius = 1;
+    _iconView.layer.shadowOpacity = 1.0f;
+    _iconView.layer.shadowRadius = 1.5f;
     _iconView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
     
     _doneMarkLabel = [[UILabel alloc] init];
@@ -74,7 +74,11 @@
     _titleLabel.font = [UIFont systemFontOfSize:14];
     _titleLabel.textColor = _tintColor;
     _titleLabel.backgroundColor = [UIColor clearColor];
-    _titleLabel.layer.opacity = 0;
+    _titleLabel.layer.opacity = 0.0f;
+    _titleLabel.layer.shadowOpacity = 1.0f;
+    _titleLabel.layer.shadowRadius = 1.0f;
+    _titleLabel.layer.shadowColor = [UIColor blackColor].CGColor;
+    _titleLabel.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
     [_titleLabel sizeToFit];
     
     _doneLabel = [[UILabel alloc] init];
