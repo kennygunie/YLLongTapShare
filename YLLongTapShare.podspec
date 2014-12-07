@@ -7,19 +7,20 @@
 #
 
 Pod::Spec.new do |s|
-  s.name         = "YLLongTapShare"
-  s.version      = "0.1"
-  s.summary      = "Long tap for sharing control for iOS."
-  s.description  = "Long tap for sharing control for iOS. Using Core Animation without any other 3rd libs." 
+  s.name         = "YLLongTapShare@kennygunie"
+  s.version      = "0.1.1"
+  s.summary      = "fork of kennygunie"
+  s.description  = "Long tap for sharing control for iOS. Using Core Animation without any other 3rd libs."
 
-  s.homepage     = "https://github.com/liyong03/YLLongTapShare"
+  s.homepage     = "https://github.com/kennygunie/YLLongTapShare"
   s.license      = { :type => "MIT", :file => "LICENSE" }
 
-  s.author             = { "liyong03" => "liyong03@gmail.com" }
-  s.social_media_url   = "http://twitter.com/liyong03"
-  
+  s.author             = { "liyong03" => "liyong03@gmail.com" ,
+                           "Kien NGUYEN" => "kennygunie@gmail.com" }
+  s.social_media_url   = "http://twitter.com/kennygunie"
+
   s.platform     = :ios, "6.0"
-  s.source       = { :git => "https://github.com/liyong03/YLLongTapShare.git", :tag => "0.1" }
+  s.source       = { :git => "https://github.com/kennygunie/YLLongTapShare.git", :tag => "v#{s.version}" }
 
   s.source_files  = "YLLongTapShareControl", "YLLongTapShareControl/**/*.{h,m}"
   s.exclude_files = "Classes/Exclude"
