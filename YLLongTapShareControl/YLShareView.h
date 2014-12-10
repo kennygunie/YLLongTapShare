@@ -18,7 +18,8 @@ typedef NS_ENUM(NSUInteger, YLShareViewState) {
 @property (nonatomic) UIImage* icon;
 @property (nonatomic) NSString* title;
 
-+ (YLShareItem*)itemWithIcon:(UIImage*)icon andTitle:(NSString*)title;
++ (YLShareItem*)itemWithImageNamed:(NSString *)imageName
+                          andTitle:(NSString *)title;
 
 @end
 
@@ -46,7 +47,7 @@ typedef void (^SelectedHandler)(NSUInteger index, YLShareItem* item);
 
 @optional
 
-- (UIColor*)colorOfShareView;
+//- (UIColor*)colorOfShareView;
 
 - (void)longTapShareView:(UIView*)view didSelectShareTo:(YLShareItem*)item withIndex:(NSUInteger)index;
 

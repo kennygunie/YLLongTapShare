@@ -14,9 +14,10 @@
 
 @implementation YLShareItem
 
-+ (YLShareItem*)itemWithIcon:(UIImage*)icon andTitle:(NSString*)title {
++ (YLShareItem*)itemWithImageNamed:(NSString *)imageName
+                          andTitle:(NSString *)title {
     YLShareItem* item = [[YLShareItem alloc] init];
-    item.icon = icon;
+    item.icon = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     item.title = title;
     
     return item;

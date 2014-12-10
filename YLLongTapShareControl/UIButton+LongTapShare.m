@@ -67,9 +67,6 @@ const void* UIButtonShareDelegatesKey = &UIButtonShareDelegatesKey;
             CGPoint touchPoint = [touch locationInView:self];
             
             YLShareView* shareView = [[YLShareView alloc] initWithShareItems:self.shareItems];
-            if ([self.delegate respondsToSelector:@selector(colorOfShareView)]) {
-                shareView.tintColor = [self.delegate colorOfShareView];
-            }
              [shareView showShareViewInView:self at:touchPoint];
             self.shareView = shareView;
         }

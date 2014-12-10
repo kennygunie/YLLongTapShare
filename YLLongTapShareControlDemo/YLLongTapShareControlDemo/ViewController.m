@@ -24,14 +24,15 @@
     if ([self.view isKindOfClass:[YLLongTapShareView class]]) {
         ((YLLongTapShareView*)self.view).doneTitle = @"OK !";
         ((YLLongTapShareView*)self.view).delegate = self;
-        [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithIcon:[UIImage imageNamed:@"facebook"] andTitle:@"Facebook"]];
-        [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithIcon:[UIImage imageNamed:@"instagram"] andTitle:@"Instagram"]];
-        [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithIcon:[UIImage imageNamed:@"pinterest"] andTitle:@"Pinterest"]];
+        ((YLLongTapShareView*)self.view).tintColor = [UIColor colorWithRed:1.000 green:0.966 blue:0.091 alpha:1.000];
+        [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"facebook" andTitle:@"Facebook"]];
+        [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"instagram" andTitle:@"Instagram"]];
+        [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"pinterest" andTitle:@"Pinterest"]];
     }
     
-    [self.longTapShareButton addShareItem:[YLShareItem itemWithIcon:[UIImage imageNamed:@"facebook"] andTitle:@"Facebook"]];
-    [self.longTapShareButton addShareItem:[YLShareItem itemWithIcon:[UIImage imageNamed:@"pinterest"] andTitle:@"Pinterest"]];
-    [self.longTapShareButton addShareItem:[YLShareItem itemWithIcon:[UIImage imageNamed:@"instagram"] andTitle:@"Instagram"]];
+    [self.longTapShareButton addShareItem:[YLShareItem itemWithImageNamed:@"facebook" andTitle:@"Facebook"]];
+    [self.longTapShareButton addShareItem:[YLShareItem itemWithImageNamed:@"pinterest" andTitle:@"Pinterest"]];
+    [self.longTapShareButton addShareItem:[YLShareItem itemWithImageNamed:@"instagram" andTitle:@"Instagram"]];
     
 }
 
