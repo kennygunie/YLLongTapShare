@@ -28,11 +28,10 @@
         [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"facebook" andTitle:@"Facebook"]];
         [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"instagram" andTitle:@"Instagram"]];
         [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"pinterest" andTitle:@"Pinterest"]];
+        [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"instagram" andTitle:@"Instagram"]];
+        [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"pinterest" andTitle:@"Pinterest"]];
     }
     
-    [self.longTapShareButton addShareItem:[YLShareItem itemWithImageNamed:@"facebook" andTitle:@"Facebook"]];
-    [self.longTapShareButton addShareItem:[YLShareItem itemWithImageNamed:@"pinterest" andTitle:@"Pinterest"]];
-    [self.longTapShareButton addShareItem:[YLShareItem itemWithImageNamed:@"instagram" andTitle:@"Instagram"]];
     
 }
 

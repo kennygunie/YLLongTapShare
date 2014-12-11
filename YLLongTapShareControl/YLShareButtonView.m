@@ -71,7 +71,7 @@
     _titleLabel = [[UILabel alloc] init];
     _titleLabel.text = _shareTitle;
     _titleLabel.textAlignment = NSTextAlignmentCenter;
-    _titleLabel.font = [UIFont systemFontOfSize:14];
+    _titleLabel.font = [UIFont systemFontOfSize:12];
     _titleLabel.textColor = _tintColor;
     _titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel.layer.opacity = 0.0f;
@@ -226,20 +226,20 @@
         return;
     
     _isSelected = YES;
-    CAAnimation* enlarge = [YLShareAnimationHelper scaleAnimationFrom:1 to:1.3
-                                                         withDuration:0.25 andDelay:0
-                                                    andTimingFunction:kCAMediaTimingFunctionEaseOut andIsSpring:NO];
+//    CAAnimation* enlarge = [YLShareAnimationHelper scaleAnimationFrom:1.0f to:1.3f
+//                                                         withDuration:0.25f andDelay:0.0f
+//                                                    andTimingFunction:kCAMediaTimingFunctionEaseOut andIsSpring:NO];
     
     CAAnimation* moveUp = [YLShareAnimationHelper positionYAnimationFrom:self.layer.position.y
-                                                                      to:self.layer.position.y-15
-                                                            withDuration:0.25 andDelay:0
+                                                                      to:self.layer.position.y-20
+                                                            withDuration:0.3 andDelay:0
                                                        andTimingFunction:kCAMediaTimingFunctionEaseOut];
     
-    CAAnimationGroup* selectAnimation = [YLShareAnimationHelper groupAnimationWithAnimations:@[enlarge, moveUp]
-                                                                                 andDuration:0.25];
+//    CAAnimationGroup* selectAnimation = [YLShareAnimationHelper groupAnimationWithAnimations:@[enlarge, moveUp]
+//                                                                                 andDuration:0.25];
     
-    [self.layer addAnimation:selectAnimation forKey:@"selectAnimation"];
-    
+
+    [self.layer addAnimation:moveUp forKey:@"selectAnimation"];
     
 //    CAAnimation* blend = [YLShareAnimationHelper fillColorAnimationFrom:[self.tintColor colorWithAlphaComponent:0]
 //                                                                     to:[self.tintColor colorWithAlphaComponent:0.5]
