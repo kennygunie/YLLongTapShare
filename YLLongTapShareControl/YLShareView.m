@@ -115,7 +115,7 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
     }
     
     
-    const CGFloat distance = 100.f;
+    const CGFloat distance = 90.f;
     const CGFloat shareSize = 70.f;
     CGFloat angle = M_PI/(5*2); // using the angle of 3 items is best
     _avgAng = angle;
