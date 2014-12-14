@@ -13,7 +13,6 @@
 @property (nonatomic, readonly) UIImage* shareIcon;
 @property (nonatomic, readonly) NSString* shareTitle;
 @property (nonatomic, readonly) NSString *doneTitle;
-@property (nonatomic) UIColor *tintColor;
 - (id)initWithIcon:(UIImage*)icon
              title:(NSString*)title
          doneTitle:(NSString*)doneTitle;

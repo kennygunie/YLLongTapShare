@@ -27,7 +27,6 @@ typedef void (^SelectedHandler)(NSUInteger index, YLShareItem* item);
 
 @interface YLShareView : UIView
 
-@property (nonatomic) UIColor *tintColor;
 @property (nonatomic, readonly) YLShareViewState state;
 @property (nonatomic, readonly) NSString *doneTitle;
 

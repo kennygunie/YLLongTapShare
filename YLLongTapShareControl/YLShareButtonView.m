@@ -50,7 +50,6 @@
 }
 
 - (void)_setup {
-    _tintColor = [UIColor whiteColor];
     self.backgroundColor = [UIColor clearColor];
     _iconView = [[UIImageView alloc] initWithImage:_shareIcon];
     _iconView.contentMode = UIViewContentModeScaleAspectFit;
@@ -72,31 +71,38 @@
     _titleLabel.text = _shareTitle;
     _titleLabel.textAlignment = NSTextAlignmentCenter;
     _titleLabel.font = [UIFont systemFontOfSize:12];
-    _titleLabel.textColor = _tintColor;
-    _titleLabel.backgroundColor = [UIColor clearColor];
+    _titleLabel.textColor = [UIColor whiteColor];
+    _titleLabel.backgroundColor = [UIColor colorWithWhite:0.000 alpha:0.600];
+    _titleLabel.layer.cornerRadius = 5.0f;
+    _titleLabel.layer.masksToBounds = YES;
     _titleLabel.layer.opacity = 0.0f;
-    _titleLabel.layer.shadowOpacity = 1.0f;
-    _titleLabel.layer.shadowRadius = 1.0f;
-    _titleLabel.layer.shadowColor = [UIColor blackColor].CGColor;
-    _titleLabel.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
     [_titleLabel sizeToFit];
+    _titleLabel.frame = CGRectMake(_titleLabel.frame.origin.x,
+                                   _titleLabel.frame.origin.y,
+                                   _titleLabel.frame.size.width + _titleLabel.layer.cornerRadius,
+                                   _titleLabel.frame.size.height + _titleLabel.layer.cornerRadius);
     
     _doneLabel = [[UILabel alloc] init];
     _doneLabel.textAlignment = NSTextAlignmentCenter;
     _doneLabel.text = self.doneTitle;
     _doneLabel.hidden = YES;
     _doneLabel.font = [UIFont systemFontOfSize:14];
-    _doneLabel.textColor = _tintColor;
     _doneLabel.backgroundColor = [UIColor clearColor];
+    _doneLabel.textColor = [UIColor whiteColor];
+    _doneLabel.layer.shadowOpacity = 1.0f;
+    _doneLabel.layer.shadowRadius = 1.0f;
+    _doneLabel.layer.shadowColor = [UIColor blackColor].CGColor;
+    _doneLabel.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+
     [_doneLabel sizeToFit];
     
     [self addSubview:_iconView];
     [self addSubview:_doneMarkLabel];
-    [self addSubview:_titleLabel];
     [self addSubview:_doneLabel];
+    [self addSubview:_titleLabel];
     
     _iconLayer = [CAShapeLayer layer];
-    _iconLayer.fillColor = [_tintColor colorWithAlphaComponent:0.0].CGColor;
+    _iconLayer.fillColor = [self.tintColor colorWithAlphaComponent:0.0].CGColor;
     //_iconLayer.strokeColor = _tintColor.CGColor;
     _iconLayer.lineWidth = 0;
     _iconLayer.anchorPoint = CGPointMake(0.5, 0.5);
@@ -105,19 +111,13 @@
 
 }
 
-- (void)setTintColor:(UIColor *)tintColor {
-    _tintColor = tintColor;
-    
-    _iconLayer.fillColor = [_tintColor colorWithAlphaComponent:0.0].CGColor;
-    _iconLayer.strokeColor = _tintColor.CGColor;
-    
-    _doneLabel.textColor = _tintColor;
-    _titleLabel.textColor = _tintColor;
-}
+
 
 - (void)layoutSubviews {
     CGRect frame = self.bounds;
-    _titleLabel.frame = CGRectIntegral(CGRectMake(0.5*(frame.size.width - _titleLabel.frame.size.width), frame.size.height, _titleLabel.frame.size.width, _titleLabel.frame.size.height));
+    _titleLabel.frame = CGRectIntegral(CGRectMake(0.5*(frame.size.width - _titleLabel.frame.size.width),
+                                                  frame.origin.y - _titleLabel.frame.size.height,
+                                                  _titleLabel.frame.size.width, _titleLabel.frame.size.height));
     _doneLabel.frame = CGRectIntegral(CGRectMake(0.5*(frame.size.width - _doneLabel.frame.size.width), frame.size.height, _doneLabel.frame.size.width, _doneLabel.frame.size.height));
     
     //frame.size.height -= labelHeight;
@@ -210,10 +210,10 @@
 
 - (void)showAnimationWithDelay:(CGFloat)delay {
     
-    CAAnimation* animation = [YLShareAnimationHelper scaleAnimationFrom:0.01 to:1.0
+    CAAnimation* animation = [YLShareAnimationHelper scaleAnimationFrom:0.0 to:1.0
                                                            withDuration:0.8 andDelay:delay
                                                       andTimingFunction:nil andIsSpring:YES];
-    CAAnimation* opacity = [YLShareAnimationHelper opacityAnimationFrom:0 to:1
+    CAAnimation* opacity = [YLShareAnimationHelper opacityAnimationFrom:0.0 to:1.0
                                                            withDuration:0.001 andDelay:delay
                                                       andTimingFunction:kCAMediaTimingFunctionLinear];
     CAAnimation* group = [YLShareAnimationHelper groupAnimationWithAnimations:@[animation, opacity] andDuration:0.8+delay];
@@ -222,7 +222,7 @@
 
 
 - (void)selectAnimation {
-    if (_isSelected || _isDone)
+    if (_isDone)
         return;
     
     _isSelected = YES;
@@ -231,7 +231,7 @@
 //                                                    andTimingFunction:kCAMediaTimingFunctionEaseOut andIsSpring:NO];
     
     CAAnimation* moveUp = [YLShareAnimationHelper positionYAnimationFrom:self.layer.position.y
-                                                                      to:self.layer.position.y-20
+                                                                      to:self.layer.position.y-10
                                                             withDuration:0.3 andDelay:0
                                                        andTimingFunction:kCAMediaTimingFunctionEaseOut];
     
@@ -250,7 +250,12 @@
     CAAnimation* titleOpacity = [YLShareAnimationHelper opacityAnimationFrom:0 to:1
                                                                 withDuration:0.25 andDelay:0
                                                            andTimingFunction:kCAMediaTimingFunctionEaseOut];
-    [_titleLabel.layer addAnimation:titleOpacity forKey:@"showTitle"];
+    CAAnimation* titleZoom = [YLShareAnimationHelper scaleAnimationFrom:0.0f to:1.0f
+                                                           withDuration:0.25f andDelay:0.0f
+                                                      andTimingFunction:kCAMediaTimingFunctionEaseOut andIsSpring:NO];
+    CAAnimationGroup* titleAnimation = [YLShareAnimationHelper groupAnimationWithAnimations:@[titleOpacity, titleZoom]
+                                                                                andDuration:0.25];
+    [_titleLabel.layer addAnimation:titleAnimation forKey:@"showTitle"];
 }
 
 - (void)resetAnimation {
@@ -265,7 +270,7 @@
     
     CAAnimation* moveDown = [YLShareAnimationHelper positionYAnimationFrom:self.layer.position.y-10
                                                                         to:self.layer.position.y
-                                                              withDuration:0.25 andDelay:0
+                                                              withDuration:0.3 andDelay:0
                                                          andTimingFunction:kCAMediaTimingFunctionEaseOut];
     
     CAAnimationGroup* unSelectAnimation = [YLShareAnimationHelper groupAnimationWithAnimations:@[shrink, moveDown]
@@ -283,7 +288,13 @@
     CAAnimation* titleOpacity = [YLShareAnimationHelper opacityAnimationFrom:1 to:0
                                                                 withDuration:0.25 andDelay:0
                                                            andTimingFunction:kCAMediaTimingFunctionEaseOut];
-    [_titleLabel.layer addAnimation:titleOpacity forKey:@"hideTitle"];
+    CAAnimation* titleZoom = [YLShareAnimationHelper scaleAnimationFrom:1.0f to:0.0f
+                                                           withDuration:0.25f andDelay:0.0f
+                                                      andTimingFunction:kCAMediaTimingFunctionEaseOut andIsSpring:NO];
+    CAAnimationGroup* titleAnimation = [YLShareAnimationHelper groupAnimationWithAnimations:@[titleOpacity, titleZoom]
+                                                                                  andDuration:0.25];
+    
+    [_titleLabel.layer addAnimation:titleAnimation forKey:@"hideTitle"];
 }
 
 @end

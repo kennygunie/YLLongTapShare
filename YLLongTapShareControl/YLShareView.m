@@ -17,7 +17,8 @@
 + (YLShareItem*)itemWithImageNamed:(NSString *)imageName
                           andTitle:(NSString *)title {
     YLShareItem* item = [[YLShareItem alloc] init];
-    item.icon = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    //item.icon = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    item.icon = [UIImage imageNamed:imageName];
     item.title = title;
     
     return item;
@@ -54,7 +55,7 @@
 
 - (instancetype)initWithShareItems:(NSArray*)shareItems
                          doneTitle:(NSString *)doneTitle{
-    self = [self initWithFrame:CGRectMake(0, 0, 60, 60)];
+    self = [self initWithFrame:CGRectMake(0, 0, 70, 70)];
     if (self) {
         _shareBtns = [NSMutableArray array];
         _state = YLShareViewUnopen;
@@ -72,9 +73,9 @@
 
 - (void)createAllShareBtnsWithShareItems:(NSArray*)shareItems {
     int n = (int)shareItems.count;
-    const CGFloat distance = 130.f;
-    const CGFloat shareSize = 60.f;
-    CGFloat angle = M_PI/(7*2); // using the angle of 3 items is best
+    const CGFloat distance = 90.f;
+    const CGFloat shareSize = 70.f;
+    CGFloat angle = M_PI/(5*2); // using the angle of 3 items is best
     _avgAng = angle;
     CGFloat startAngle = M_PI_2 - (n-1)*angle;
     for (int i=0; i<n; i++) {
@@ -88,7 +89,6 @@
         YLShareButtonView* view = [[YLShareButtonView alloc] initWithIcon:item.icon
                                                                     title:item.title
                                                                 doneTitle:self.doneTitle];
-        view.tintColor = _tintColor;
         view.frame = frame;
         [self addSubview:view];
         [_shareBtns addObject:view];
@@ -100,8 +100,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        _tintColor = [UIColor whiteColor];
-        
         _layer = [CAShapeLayer layer];
         _layer.fillColor = [UIColor clearColor].CGColor;
         _layer.strokeColor = self.tintColor.CGColor;
@@ -131,15 +129,14 @@
 }
 
 - (void)setTintColor:(UIColor *)tintColor {
-    _tintColor = tintColor;
+    [super setTintColor:tintColor];
     _layer.strokeColor = self.tintColor.CGColor;
     _bgLayer.fillColor = [self.tintColor colorWithAlphaComponent:0.8].CGColor;
     _bgLayer.strokeColor = self.tintColor.CGColor;
     _btnLayer.fillColor = self.tintColor.CGColor;
     _btnLayer.strokeColor = self.tintColor.CGColor;
-    
     for (YLShareButtonView* view in _shareBtns) {
-        view.tintColor = _tintColor;
+        view.tintColor = self.tintColor;
     }
 }
 
@@ -277,7 +274,7 @@
             if (_selectedView != selectedView) {
                 if (_selectedView) {
                     [_selectedView resetAnimation];
-                    //_selectedView = nil;
+                    _selectedView = nil;
                 }
                 _selectedView = selectedView;
                 [_selectedView selectAnimation];
@@ -286,13 +283,13 @@
             }
         } else {
             [_selectedView resetAnimation];
-            //_selectedView = nil;
+            _selectedView = nil;
             //[_selectTimer invalidate];
             //_selectTimer = nil;
         }
     } else {
         [_selectedView resetAnimation];
-        //_selectedView = nil;
+        _selectedView = nil;
         //[_selectTimer invalidate];
         //_selectTimer = nil;
     }
