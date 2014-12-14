@@ -16,9 +16,22 @@
 
 + (YLShareItem*)itemWithImageNamed:(NSString *)imageName
                           andTitle:(NSString *)title {
+    return [self itemWithImageNamed:imageName
+                           andTitle:title
+                         shouldTint:NO];
+}
+
++ (YLShareItem*)itemWithImageNamed:(NSString *)imageName
+                          andTitle:(NSString *)title
+                        shouldTint:(BOOL)shouldTint {
     YLShareItem* item = [[YLShareItem alloc] init];
-    //item.icon = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    item.icon = [UIImage imageNamed:imageName];
+    UIImage *image;
+    if (shouldTint) {
+        image = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    } else {
+        image = [UIImage imageNamed:imageName];
+    }
+    item.icon = image;
     item.title = title;
     
     return item;

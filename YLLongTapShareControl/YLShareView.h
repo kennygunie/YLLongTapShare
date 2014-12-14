@@ -21,6 +21,10 @@ typedef NS_ENUM(NSUInteger, YLShareViewState) {
 + (YLShareItem*)itemWithImageNamed:(NSString *)imageName
                           andTitle:(NSString *)title;
 
++ (YLShareItem*)itemWithImageNamed:(NSString *)imageName
+                          andTitle:(NSString *)title
+                        shouldTint:(BOOL)shouldTint;
+
 @end
 
 typedef void (^SelectedHandler)(NSUInteger index, YLShareItem* item);
