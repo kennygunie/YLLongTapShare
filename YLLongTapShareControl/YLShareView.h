@@ -31,8 +31,6 @@ typedef void (^SelectedHandler)(NSUInteger index, YLShareItem* item);
 @property (nonatomic, readonly) NSString *doneTitle;
 
 - (instancetype)initWithShareItems:(NSArray*)shareItems;
-- (instancetype)initWithShareItems:(NSArray*)shareItems
-                         doneTitle:(NSString *)doneTitle;
 - (void)showShareViewInView:(UIView*)view at:(CGPoint)point;
 - (void)dismissWithCompletion:(SelectedHandler)handler;
 /*

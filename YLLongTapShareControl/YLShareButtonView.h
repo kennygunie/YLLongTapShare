@@ -12,7 +12,6 @@
 
 @property (nonatomic, readonly) UIImage* shareIcon;
 @property (nonatomic, readonly) NSString* shareTitle;
-@property (nonatomic, readonly) NSString *doneTitle;
 - (id)initWithIcon:(UIImage*)icon
              title:(NSString*)title
          doneTitle:(NSString*)doneTitle;

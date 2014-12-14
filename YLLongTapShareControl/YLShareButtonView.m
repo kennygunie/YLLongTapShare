@@ -24,7 +24,6 @@
     UIImageView*    _iconView;
     CAShapeLayer*   _iconLayer;
     UILabel*        _titleLabel;
-    UILabel*        _doneLabel;
     UILabel*        _doneMarkLabel;
     
     BOOL            _isSelected;
@@ -82,23 +81,9 @@
                                    _titleLabel.frame.size.width + _titleLabel.layer.cornerRadius,
                                    _titleLabel.frame.size.height + _titleLabel.layer.cornerRadius);
     
-    _doneLabel = [[UILabel alloc] init];
-    _doneLabel.textAlignment = NSTextAlignmentCenter;
-    _doneLabel.text = self.doneTitle;
-    _doneLabel.hidden = YES;
-    _doneLabel.font = [UIFont systemFontOfSize:14];
-    _doneLabel.backgroundColor = [UIColor clearColor];
-    _doneLabel.textColor = [UIColor whiteColor];
-    _doneLabel.layer.shadowOpacity = 1.0f;
-    _doneLabel.layer.shadowRadius = 1.0f;
-    _doneLabel.layer.shadowColor = [UIColor blackColor].CGColor;
-    _doneLabel.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
 
-    [_doneLabel sizeToFit];
-    
     [self addSubview:_iconView];
     [self addSubview:_doneMarkLabel];
-    [self addSubview:_doneLabel];
     [self addSubview:_titleLabel];
     
     _iconLayer = [CAShapeLayer layer];
@@ -118,7 +103,6 @@
     _titleLabel.frame = CGRectIntegral(CGRectMake(0.5*(frame.size.width - _titleLabel.frame.size.width),
                                                   frame.origin.y - _titleLabel.frame.size.height,
                                                   _titleLabel.frame.size.width, _titleLabel.frame.size.height));
-    _doneLabel.frame = CGRectIntegral(CGRectMake(0.5*(frame.size.width - _doneLabel.frame.size.width), frame.size.height, _doneLabel.frame.size.width, _doneLabel.frame.size.height));
     
     //frame.size.height -= labelHeight;
     CGFloat wid = MIN(frame.size.width, frame.size.height);
@@ -160,20 +144,6 @@
     
     [_iconLayer addAnimation:group forKey:@"fillToWhite"];
     
-    _doneMarkLabel.hidden = NO;
-    _doneMarkLabel.layer.opacity = 0;
-    CAAnimation* doneappear = [YLShareAnimationHelper opacityAnimationFrom:0 to:1
-                                                              withDuration:0.5 andDelay:0
-                                                         andTimingFunction:kCAMediaTimingFunctionEaseIn];
-    CAAnimation* moveUp3 = [YLShareAnimationHelper scaleAnimationFrom:1.2 to:1
-                                                         withDuration:0.5 andDelay:0
-                                                    andTimingFunction:kCAMediaTimingFunctionEaseIn andIsSpring:NO];
-    
-    CAAnimationGroup* doneMarkAnimation = [YLShareAnimationHelper groupAnimationWithAnimations:@[ doneappear, moveUp3 ]
-                                                                                   andDuration:0.5];
-    
-    [_doneMarkLabel.layer addAnimation:doneMarkAnimation forKey:@"showDoneMark"];
-    
     
     CAAnimation* disappear = [YLShareAnimationHelper opacityAnimationFrom:1 to:0
                                                              withDuration:0.2 andDelay:0
@@ -189,23 +159,23 @@
     
     [_titleLabel.layer addAnimation:titleAnimation forKey:@"titleMoveOut"];
     
-    _doneLabel.hidden = NO;
-    _doneLabel.layer.opacity = 0;
-    CAAnimation* appear = [YLShareAnimationHelper opacityAnimationFrom:0 to:1
-                                                          withDuration:0.2 andDelay:0
-                                                     andTimingFunction:kCAMediaTimingFunctionEaseIn];
+    _doneMarkLabel.hidden = NO;
+    _doneMarkLabel.layer.opacity = 0;
+    CAAnimation* doneappear = [YLShareAnimationHelper opacityAnimationFrom:0 to:1
+                                                              withDuration:0.5 andDelay:0
+                                                         andTimingFunction:kCAMediaTimingFunctionEaseIn];
+    CAAnimation* moveUp3 = [YLShareAnimationHelper scaleAnimationFrom:1.2 to:1
+                                                         withDuration:0.5 andDelay:0
+                                                    andTimingFunction:kCAMediaTimingFunctionEaseIn andIsSpring:NO];
     
-    CAAnimation* moveUp2 = [YLShareAnimationHelper positionYAnimationFrom:_doneLabel.layer.position.y+_doneLabel.frame.size.height
-                                                                       to:_doneLabel.layer.position.y
-                                                             withDuration:0.2 andDelay:0
-                                                        andTimingFunction:kCAMediaTimingFunctionEaseIn];
+    CAAnimationGroup* doneMarkAnimation = [YLShareAnimationHelper groupAnimationWithAnimations:@[ doneappear, moveUp3 ]
+                                                                                   andDuration:0.5];
     
-    CAAnimationGroup* doneAnimation = [YLShareAnimationHelper groupAnimationWithAnimations:@[ appear, moveUp2 ]
-                                                                               andDuration:.5];
-    doneAnimation.completion = ^(BOOL finished) {
+    doneMarkAnimation.completion = ^(BOOL finished) {
         doneBlock();
     };
-    [_doneLabel.layer addAnimation:doneAnimation forKey:@"doneMoveIn"];
+    [_doneMarkLabel.layer addAnimation:doneMarkAnimation forKey:@"showDoneMark"];
+    
 }
 
 - (void)showAnimationWithDelay:(CGFloat)delay {

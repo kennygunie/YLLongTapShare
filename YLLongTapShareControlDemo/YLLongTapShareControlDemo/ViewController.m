@@ -22,7 +22,6 @@
     
 	// Do any additional setup after loading the view, typically from a nib.
     if ([self.view isKindOfClass:[YLLongTapShareView class]]) {
-        ((YLLongTapShareView*)self.view).doneTitle = @"OK !";
         ((YLLongTapShareView*)self.view).delegate = self;
         ((YLLongTapShareView*)self.view).tintColor = [UIColor whiteColor];
         [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"facebook" andTitle:@"Facebook"]];

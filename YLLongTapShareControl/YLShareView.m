@@ -50,11 +50,6 @@
 }
 
 - (instancetype)initWithShareItems:(NSArray*)shareItems {
-    return [self initWithShareItems:shareItems doneTitle:@"Done !"];
-}
-
-- (instancetype)initWithShareItems:(NSArray*)shareItems
-                         doneTitle:(NSString *)doneTitle{
     self = [self initWithFrame:CGRectMake(0, 0, 70, 70)];
     if (self) {
         _shareBtns = [NSMutableArray array];
@@ -64,12 +59,12 @@
         _preventSlide = NO;
         _isDismissed = NO;
         _shareItems = shareItems;
-        self.doneTitle = doneTitle;
         [self createAllShareBtnsWithShareItems:shareItems];
     }
     
     return self;
 }
+
 
 - (void)createAllShareBtnsWithShareItems:(NSArray*)shareItems {
     int n = (int)shareItems.count;
