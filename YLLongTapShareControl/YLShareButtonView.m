@@ -102,7 +102,8 @@
     CGRect frame = self.bounds;
     _titleLabel.frame = CGRectIntegral(CGRectMake(0.5*(frame.size.width - _titleLabel.frame.size.width),
                                                   frame.origin.y - _titleLabel.frame.size.height,
-                                                  _titleLabel.frame.size.width, _titleLabel.frame.size.height));
+                                                  _titleLabel.frame.size.width,
+                                                  _titleLabel.frame.size.height));
     
     //frame.size.height -= labelHeight;
     CGFloat wid = MIN(frame.size.width, frame.size.height);
@@ -226,6 +227,7 @@
     CAAnimationGroup* titleAnimation = [YLShareAnimationHelper groupAnimationWithAnimations:@[titleOpacity, titleZoom]
                                                                                 andDuration:0.25];
     [_titleLabel.layer addAnimation:titleAnimation forKey:@"showTitle"];
+
 }
 
 - (void)resetAnimation {

@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+
+
 @interface YLShareButtonView : UIView
 
 @property (nonatomic, readonly) UIImage* shareIcon;
 @property (nonatomic, readonly) NSString* shareTitle;
+
 - (id)initWithIcon:(UIImage*)icon
              title:(NSString*)title
          doneTitle:(NSString*)doneTitle;

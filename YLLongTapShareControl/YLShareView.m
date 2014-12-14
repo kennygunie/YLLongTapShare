@@ -12,6 +12,13 @@
 #import "OMVector.h"
 #import "YLShareAnimationHelper.h"
 
+typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
+    YLShareViewPositionTop = 0,
+    YLShareViewPositionRight,
+    YLShareViewPositionBottom,
+    YLShareViewPositionLeft,
+};
+
 @implementation YLShareItem
 
 + (YLShareItem*)itemWithImageNamed:(NSString *)imageName
@@ -44,6 +51,7 @@
 @property (nonatomic, readwrite) YLShareViewState state;
 //@property (nonatomic, copy) SelectedHandler completionHandler;
 @property (nonatomic, readwrite) NSString *doneTitle;
+@property (nonatomic) YLShareViewPosition shareViewPosition;
 @end
 
 @implementation YLShareView {
@@ -72,34 +80,79 @@
         _preventSlide = NO;
         _isDismissed = NO;
         _shareItems = shareItems;
-        [self createAllShareBtnsWithShareItems:shareItems];
     }
     
     return self;
 }
 
 
-- (void)createAllShareBtnsWithShareItems:(NSArray*)shareItems {
-    int n = (int)shareItems.count;
-    const CGFloat distance = 90.f;
+- (void)createAllShareBtnsWithShareItems:(NSArray*)shareItems at:(CGPoint)point inView:(UIView*)view {
+    CGFloat width = CGRectGetWidth(view.frame);
+    
+    int itemsCount = (int)shareItems.count;
+    
+    int offset;
+    if (point.x < 0.1 * width) {
+        offset = -itemsCount;
+        self.shareViewPosition = YLShareViewPositionLeft;
+    } else if (point.x < 0.25 * width) {
+        offset = -itemsCount + 1;
+        self.shareViewPosition = YLShareViewPositionLeft;
+    } else if (point.x < 0.70 * width) {
+        if (point.y < 140.0) {
+            offset = 2*itemsCount;
+            self.shareViewPosition = YLShareViewPositionTop;
+        } else {
+            offset = 0;
+            self.shareViewPosition = YLShareViewPositionBottom;
+        }
+    } else if (point.x < 0.9 * width) {
+        offset = itemsCount - 1;
+        self.shareViewPosition = YLShareViewPositionRight;
+    } else {
+        offset = itemsCount;
+        self.shareViewPosition = YLShareViewPositionRight;
+    }
+    
+    
+    const CGFloat distance = 100.f;
     const CGFloat shareSize = 70.f;
     CGFloat angle = M_PI/(5*2); // using the angle of 3 items is best
     _avgAng = angle;
-    CGFloat startAngle = M_PI_2 - (n-1)*angle;
-    for (int i=0; i<n; i++) {
-        YLShareItem* item = (YLShareItem*)shareItems[i];
+    CGFloat startAngle = M_PI_2 - (itemsCount - 1 + offset)*angle;
+    for (int i=0; i<itemsCount; i++) {
+        YLShareItem* item = shareItems[i];
         CGFloat fan = startAngle + angle*i*2;
         CGPoint p;
         p.x = roundf(-distance * cosf(fan) + self.bounds.size.width/2);
         p.y = roundf(-distance * sinf(fan) + self.bounds.size.height/2);
         
         CGRect frame = CGRectMake(p.x-shareSize/2, p.y-shareSize/2, shareSize, shareSize);
-        YLShareButtonView* view = [[YLShareButtonView alloc] initWithIcon:item.icon
-                                                                    title:item.title
-                                                                doneTitle:self.doneTitle];
-        view.frame = frame;
-        [self addSubview:view];
-        [_shareBtns addObject:view];
+        YLShareButtonView* shareButtonView = [[YLShareButtonView alloc] initWithIcon:item.icon
+                                                                               title:item.title
+                                                                           doneTitle:self.doneTitle];
+        shareButtonView.frame = frame;
+        [self addSubview:shareButtonView];
+        
+        switch (self.shareViewPosition) {
+            case YLShareViewPositionTop:
+                if (i == 0 || i == itemsCount - 1) {
+                    [self sendSubviewToBack:shareButtonView];
+                }
+                break;
+            case YLShareViewPositionRight:
+                [self sendSubviewToBack:shareButtonView];
+                break;
+            case YLShareViewPositionBottom:
+                if (i > 0 && i < itemsCount - 1) {
+                    [self sendSubviewToBack:shareButtonView];
+                }
+                break;
+            default:
+                break;
+        }
+        [_shareBtns addObject:shareButtonView];
+        
     }
 }
 
@@ -124,6 +177,7 @@
         [self.layer addSublayer:_bgLayer];
         _bgLayer.anchorPoint = CGPointMake(0.5, 0.5);
         _bgLayer.opacity = 0.0;
+        _bgLayer.zPosition = -1;
         
         _btnLayer = [CAShapeLayer layer];
         _btnLayer.fillColor = self.tintColor.CGColor;
@@ -132,6 +186,7 @@
         [self.layer addSublayer:_btnLayer];
         _btnLayer.anchorPoint = CGPointMake(0.5, 0.5);
         _btnLayer.opacity = 1.0;
+        _btnLayer.zPosition = -1;
     }
     return self;
 }
@@ -171,40 +226,40 @@
 }
 
 - (void)showShareViewInView:(UIView*)view at:(CGPoint)point {
-    
-    
+    [self createAllShareBtnsWithShareItems:_shareItems at:point inView:view];
     self.center = point;
     [view addSubview:self];
     
+    
     static float scaleTime = 0.0;
     static float disappTime = 0.0;
-//    CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-//    animation.duration = scaleTime;
-//    animation.fromValue = @(0);
-//    animation.toValue = @(1);
-//    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-//    animation.fillMode = kCAFillModeForwards;
-//    animation.removedOnCompletion = NO;
+    //    CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+    //    animation.duration = scaleTime;
+    //    animation.fromValue = @(0);
+    //    animation.toValue = @(1);
+    //    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    //    animation.fillMode = kCAFillModeForwards;
+    //    animation.removedOnCompletion = NO;
     
-//    CAAnimation* disappear = [YLShareAnimationHelper scaleAnimationFrom:1.0 to:0.01
-//                                                           withDuration:disappTime andDelay:scaleTime
-//                                                      andTimingFunction:kCAMediaTimingFunctionEaseOut andIsSpring:NO];
+    //    CAAnimation* disappear = [YLShareAnimationHelper scaleAnimationFrom:1.0 to:0.01
+    //                                                           withDuration:disappTime andDelay:scaleTime
+    //                                                      andTimingFunction:kCAMediaTimingFunctionEaseOut andIsSpring:NO];
     
     
-//    CAAnimationGroup *group = [YLShareAnimationHelper groupAnimationWithAnimations:@[ animation, disappear ]
-//                                                                       andDuration:(scaleTime + disappTime)];
-//    [_layer addAnimation:group forKey:@"circleProgress"];
+    //    CAAnimationGroup *group = [YLShareAnimationHelper groupAnimationWithAnimations:@[ animation, disappear ]
+    //                                                                       andDuration:(scaleTime + disappTime)];
+    //    [_layer addAnimation:group forKey:@"circleProgress"];
     
     
     CAAnimation* disappear = [YLShareAnimationHelper scaleAnimationFrom:1.0 to:0.01
                                                            withDuration:disappTime andDelay:scaleTime
                                                       andTimingFunction:kCAMediaTimingFunctionEaseOut andIsSpring:NO];
     [_layer addAnimation:disappear forKey:@"showBounceBackground"];
-
+    
     
     CAAnimation* disappear2 = [YLShareAnimationHelper scaleAnimationFrom:0.01 to:1.0
-                                                                    withDuration:0.8 andDelay:(scaleTime+disappTime)
-                                                               andTimingFunction:nil andIsSpring:YES];
+                                                            withDuration:0.8 andDelay:(scaleTime+disappTime)
+                                                       andTimingFunction:nil andIsSpring:YES];
     
     CAAnimation* showOpacity = [YLShareAnimationHelper opacityAnimationFrom:1 to:1
                                                                withDuration:0.8 andDelay:(scaleTime+disappTime)
