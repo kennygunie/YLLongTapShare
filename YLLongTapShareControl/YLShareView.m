@@ -95,10 +95,10 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
     if (point.x < 0.1 * width) {
         offset = -itemsCount;
         self.shareViewPosition = YLShareViewPositionLeft;
-    } else if (point.x < 0.25 * width) {
+    } else if (point.x < 0.3 * width) {
         offset = -itemsCount + 1;
         self.shareViewPosition = YLShareViewPositionLeft;
-    } else if (point.x < 0.70 * width) {
+    } else if (point.x < 0.7 * width) {
         if (point.y < 140.0) {
             offset = 2*itemsCount;
             self.shareViewPosition = YLShareViewPositionTop;
