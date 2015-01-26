@@ -62,14 +62,14 @@
     _doneMarkLabel.text = @"✔︎";
     _doneMarkLabel.textColor = [UIColor grayColor];
     _doneMarkLabel.backgroundColor = [UIColor clearColor];
-    _doneMarkLabel.font = [UIFont systemFontOfSize:30];
+    _doneMarkLabel.font = [UIFont systemFontOfSize:22];
     _doneMarkLabel.textAlignment = NSTextAlignmentCenter;
     _doneMarkLabel.hidden = YES;
     
     _titleLabel = [[UILabel alloc] init];
     _titleLabel.text = _shareTitle;
     _titleLabel.textAlignment = NSTextAlignmentCenter;
-    _titleLabel.font = [UIFont systemFontOfSize:26];
+    _titleLabel.font = [UIFont systemFontOfSize:18];
     _titleLabel.textColor = [UIColor whiteColor];
     _titleLabel.backgroundColor = [UIColor colorWithWhite:0.000 alpha:0.600];
     _titleLabel.layer.cornerRadius = 5.0f;
