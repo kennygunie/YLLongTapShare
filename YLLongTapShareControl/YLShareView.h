@@ -32,7 +32,8 @@ typedef void (^SelectedHandler)(NSUInteger index, YLShareItem* item);
 @interface YLShareView : UIView
 
 @property (nonatomic, readonly) YLShareViewState state;
-@property (nonatomic, readonly) NSString *doneTitle;
+@property (nonatomic) UIFont *titleFont;
+@property (nonatomic) CGFloat distance;
 
 - (instancetype)initWithShareItems:(NSArray*)shareItems;
 - (void)showShareViewInView:(UIView*)view at:(CGPoint)point;

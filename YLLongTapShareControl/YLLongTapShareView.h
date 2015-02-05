@@ -12,6 +12,8 @@
 @interface YLLongTapShareView : UIView
 
 @property (nonatomic, weak) id<YLLongTapShareDelegate> delegate;
+@property (nonatomic) CGFloat distance;
+@property (nonatomic) UIFont *titleFont;
 
 - (void)addShareItem:(YLShareItem*)item;
 

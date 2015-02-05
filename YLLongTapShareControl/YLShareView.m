@@ -50,7 +50,6 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
 
 @property (nonatomic, readwrite) YLShareViewState state;
 //@property (nonatomic, copy) SelectedHandler completionHandler;
-@property (nonatomic, readwrite) NSString *doneTitle;
 @property (nonatomic) YLShareViewPosition shareViewPosition;
 @end
 
@@ -80,6 +79,7 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
         _preventSlide = NO;
         _isDismissed = NO;
         _shareItems = shareItems;
+        _distance = 100;
     }
     
     return self;
@@ -115,7 +115,6 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
     }
     
     
-    const CGFloat distance = 100.f;
     const CGFloat shareSize = 70.f;
     CGFloat angle = M_PI/(itemsCount*2); // using the angle of 3 items is best
     _avgAng = angle;
@@ -124,13 +123,13 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
         YLShareItem* item = shareItems[i];
         CGFloat fan = startAngle + angle*i*2;
         CGPoint p;
-        p.x = roundf(-distance * cosf(fan) + self.bounds.size.width/2);
-        p.y = roundf(-distance * sinf(fan) + self.bounds.size.height/2);
+        p.x = roundf(-_distance * cosf(fan) + self.bounds.size.width/2);
+        p.y = roundf(-_distance * sinf(fan) + self.bounds.size.height/2);
         
         CGRect frame = CGRectMake(p.x-shareSize/2, p.y-shareSize/2, shareSize, shareSize);
         YLShareButtonView* shareButtonView = [[YLShareButtonView alloc] initWithIcon:item.icon
                                                                                title:item.title
-                                                                           doneTitle:self.doneTitle];
+                                                                           titleFont:self.titleFont];
         shareButtonView.frame = frame;
         [self addSubview:shareButtonView];
         

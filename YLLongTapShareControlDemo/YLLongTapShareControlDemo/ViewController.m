@@ -24,6 +24,8 @@
     if ([self.view isKindOfClass:[YLLongTapShareView class]]) {
         ((YLLongTapShareView*)self.view).delegate = self;
         ((YLLongTapShareView*)self.view).tintColor = [UIColor whiteColor];
+        ((YLLongTapShareView*)self.view).distance = 80.0f;
+        ((YLLongTapShareView*)self.view).titleFont = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:24.f];
         [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"facebook" andTitle:@"Facebook" shouldTint:YES]];
         [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"instagram" andTitle:@"Instagram"]];
         [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"pinterest" andTitle:@"Pinterest"]];
