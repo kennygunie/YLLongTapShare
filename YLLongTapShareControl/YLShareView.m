@@ -79,7 +79,6 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
         _preventSlide = NO;
         _isDismissed = NO;
         _shareItems = shareItems;
-        _distance = 100;
     }
     
     return self;
