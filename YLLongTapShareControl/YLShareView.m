@@ -115,9 +115,9 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
     }
     
     
-    const CGFloat distance = 90.f;
+    const CGFloat distance = 100.f;
     const CGFloat shareSize = 70.f;
-    CGFloat angle = M_PI/(5*2); // using the angle of 3 items is best
+    CGFloat angle = M_PI/(itemsCount*2); // using the angle of 3 items is best
     _avgAng = angle;
     CGFloat startAngle = M_PI_2 - (itemsCount - 1 + offset)*angle;
     for (int i=0; i<itemsCount; i++) {
@@ -233,22 +233,6 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
     
     static float scaleTime = 0.0;
     static float disappTime = 0.0;
-    //    CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    //    animation.duration = scaleTime;
-    //    animation.fromValue = @(0);
-    //    animation.toValue = @(1);
-    //    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-    //    animation.fillMode = kCAFillModeForwards;
-    //    animation.removedOnCompletion = NO;
-    
-    //    CAAnimation* disappear = [YLShareAnimationHelper scaleAnimationFrom:1.0 to:0.01
-    //                                                           withDuration:disappTime andDelay:scaleTime
-    //                                                      andTimingFunction:kCAMediaTimingFunctionEaseOut andIsSpring:NO];
-    
-    
-    //    CAAnimationGroup *group = [YLShareAnimationHelper groupAnimationWithAnimations:@[ animation, disappear ]
-    //                                                                       andDuration:(scaleTime + disappTime)];
-    //    [_layer addAnimation:group forKey:@"circleProgress"];
     
     
     CAAnimation* disappear = [YLShareAnimationHelper scaleAnimationFrom:1.0 to:0.01

@@ -24,9 +24,7 @@
     if ([self.view isKindOfClass:[YLLongTapShareView class]]) {
         ((YLLongTapShareView*)self.view).delegate = self;
         ((YLLongTapShareView*)self.view).tintColor = [UIColor whiteColor];
-        [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"facebook" andTitle:@"Facebook"]];
-        [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"instagram" andTitle:@"Instagram"]];
-        [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"pinterest" andTitle:@"Pinterest"]];
+        [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"facebook" andTitle:@"Facebook" shouldTint:YES]];
         [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"instagram" andTitle:@"Instagram"]];
         [(YLLongTapShareView*)self.view addShareItem:[YLShareItem itemWithImageNamed:@"pinterest" andTitle:@"Pinterest"]];
     }

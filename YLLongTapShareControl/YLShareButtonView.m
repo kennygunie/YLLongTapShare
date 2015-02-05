@@ -62,14 +62,14 @@
     _doneMarkLabel.text = @"✔︎";
     _doneMarkLabel.textColor = [UIColor grayColor];
     _doneMarkLabel.backgroundColor = [UIColor clearColor];
-    _doneMarkLabel.font = [UIFont systemFontOfSize:22];
+    _doneMarkLabel.font = [UIFont systemFontOfSize:40];
     _doneMarkLabel.textAlignment = NSTextAlignmentCenter;
     _doneMarkLabel.hidden = YES;
     
     _titleLabel = [[UILabel alloc] init];
     _titleLabel.text = _shareTitle;
     _titleLabel.textAlignment = NSTextAlignmentCenter;
-    _titleLabel.font = [UIFont systemFontOfSize:18];
+    _titleLabel.font = [UIFont systemFontOfSize:22];
     _titleLabel.textColor = [UIColor whiteColor];
     _titleLabel.backgroundColor = [UIColor colorWithWhite:0.000 alpha:0.600];
     _titleLabel.layer.cornerRadius = 5.0f;
@@ -110,12 +110,14 @@
     CGRect square = CGRectMake((frame.size.width-wid)/2,
                                (frame.size.height-wid)/2,
                                wid, wid);
-    square = CGRectInset(square, 4, 4);
     _iconView.frame = square;
+//    CGFloat wid2 = CGRectGetWidth(square)*1.3f;
+//    _doneMarkLabel.frame = CGRectMake((square.size.width-wid2)/2,
+//                                      (square.size.height-wid2)/2,
+//                                      wid2, wid2);
     _doneMarkLabel.frame = _iconView.frame;
-    
-    _iconLayer.bounds = _iconView.bounds;
-    _iconLayer.position = _iconView.center;
+    _iconLayer.bounds = _doneMarkLabel.bounds;
+    _iconLayer.position = _doneMarkLabel.center;
    
     _iconLayer.path = [UIBezierPath bezierPathWithRoundedRect:_iconLayer.bounds cornerRadius:_iconLayer.bounds.size.width/2].CGPath;
 }
@@ -134,12 +136,12 @@
     animation2.removedOnCompletion = NO;
     
     
-    CAAnimation* animation = [YLShareAnimationHelper fillColorAnimationFrom:[self.tintColor colorWithAlphaComponent:0.0]
+    CAAnimation* fillAnimation = [YLShareAnimationHelper fillColorAnimationFrom:[self.tintColor colorWithAlphaComponent:0.0]
                                                                          to:self.tintColor
                                                                withDuration:0.5 andDelay:0
                                                           andTimingFunction:kCAMediaTimingFunctionEaseOut];
     
-    CAAnimationGroup *group = [YLShareAnimationHelper groupAnimationWithAnimations:@[ animation2, animation ]
+    CAAnimationGroup *group = [YLShareAnimationHelper groupAnimationWithAnimations:@[ animation2, fillAnimation ]
                                                                        andDuration:2.0];
     
     
@@ -155,9 +157,9 @@
                                                             withDuration:0.2 andDelay:0
                                                        andTimingFunction:kCAMediaTimingFunctionEaseIn];
     
-    CAAnimationGroup* titleAnimation = [YLShareAnimationHelper groupAnimationWithAnimations:@[ disappear, moveUp ]
+    CAAnimationGroup* titleAnimation = [YLShareAnimationHelper groupAnimationWithAnimations:@[disappear,moveUp]
                                                                                 andDuration:0.5];
-    
+    [_iconView.layer addAnimation:disappear forKey:@"iconViewMoveOut"];
     [_titleLabel.layer addAnimation:titleAnimation forKey:@"titleMoveOut"];
     
     _doneMarkLabel.hidden = NO;
