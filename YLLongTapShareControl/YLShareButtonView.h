@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-
+@class YLShareItem;
 
 @interface YLShareButtonView : UIView
 
@@ -16,9 +16,7 @@
 @property (nonatomic, readonly) NSString* shareTitle;
 @property (nonatomic) UIFont *titleFont;
 
-- (id)initWithIcon:(UIImage*)icon
-             title:(NSString*)title
-         titleFont:(UIFont *)titleFont;
+- (instancetype)initWithItem:(YLShareItem *)item;
 
 - (void)showAnimationWithDelay:(CGFloat)delay;
 - (void)animateToDoneWithHandler:(void(^)())doneBlock;

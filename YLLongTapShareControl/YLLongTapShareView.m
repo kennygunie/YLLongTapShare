@@ -41,8 +41,9 @@
             CGPoint touchPoint = [touch locationInView:self];
             self.shareView = [[YLShareView alloc] initWithShareItems:self.shareItems];
             self.shareView.distance = self.distance ? self.distance : 80.f;
-            self.shareView.tintColor = self.tintColor;
             self.shareView.titleFont = self.titleFont;
+            self.shareView.selectedColor = self.selectedColor;
+            self.shareView.tintColor = self.tintColor;
             [self.shareView showShareViewInView:self at:touchPoint];
         }
     }

@@ -10,11 +10,13 @@
 #import "Evaluate.h"
 #import "CAAnimation+Blocks.h"
 #import "YLShareAnimationHelper.h"
+#import "YLShareItem.h"
 
 @interface YLShareButtonView()
 
-@property (nonatomic, readwrite) UIImage* shareIcon;
-@property (nonatomic, readwrite) NSString* shareTitle;
+@property (nonatomic) UIImage* shareIcon;
+@property (nonatomic) NSString* shareTitle;
+
 @property (nonatomic, copy) void(^doneHandler)();
 
 @end
@@ -30,24 +32,20 @@
 }
 
 
-- (instancetype)initWithIcon:(UIImage*)icon
-                       title:(NSString*)title
-                   titleFont:(UIFont *)titleFont {
+- (instancetype)initWithItem:(YLShareItem *)item {
     self = [super initWithFrame:CGRectMake(0, 0, 80, 80)];
     if (self) {
-        // Initialization code
-        self.shareIcon = icon;
-        self.shareTitle = title;
+        self.shareIcon = item.icon;
+        self.shareTitle = item.title;
         _isSelected = NO;
         _isDone = NO;
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = titleFont ? titleFont : [UIFont systemFontOfSize:22];
         [self _setup];
         self.layer.opacity = 0;
+        
     }
     return self;
 }
-
 
 - (void)_setup {
     self.backgroundColor = [UIColor clearColor];
@@ -95,8 +93,6 @@
     [self.layer insertSublayer:_iconLayer above:_iconView.layer];
     
 }
-
-
 
 - (void)layoutSubviews {
     CGRect frame = self.bounds;

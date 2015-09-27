@@ -11,6 +11,7 @@
 #import "YLShareButtonView.h"
 #import "OMVector.h"
 #import "YLShareAnimationHelper.h"
+#import "YLShareItem.h"
 
 typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
     YLShareViewPositionTop = 0,
@@ -18,33 +19,6 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
     YLShareViewPositionBottom,
     YLShareViewPositionLeft,
 };
-
-@implementation YLShareItem
-
-+ (YLShareItem*)itemWithImageNamed:(NSString *)imageName
-                          andTitle:(NSString *)title {
-    return [self itemWithImageNamed:imageName
-                           andTitle:title
-                         shouldTint:NO];
-}
-
-+ (YLShareItem*)itemWithImageNamed:(NSString *)imageName
-                          andTitle:(NSString *)title
-                        shouldTint:(BOOL)shouldTint {
-    YLShareItem* item = [[YLShareItem alloc] init];
-    UIImage *image;
-    if (shouldTint) {
-        image = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    } else {
-        image = [UIImage imageNamed:imageName];
-    }
-    item.icon = image;
-    item.title = title;
-    
-    return item;
-}
-
-@end
 
 @interface YLShareView()
 
@@ -126,9 +100,8 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
         p.y = roundf(-_distance * sinf(fan) + self.bounds.size.height/2);
         
         CGRect frame = CGRectMake(p.x-shareSize/2, p.y-shareSize/2, shareSize, shareSize);
-        YLShareButtonView* shareButtonView = [[YLShareButtonView alloc] initWithIcon:item.icon
-                                                                               title:item.title
-                                                                           titleFont:self.titleFont];
+        YLShareButtonView* shareButtonView = [[YLShareButtonView alloc] initWithItem:item];
+        shareButtonView.titleFont = self.titleFont;
         shareButtonView.frame = frame;
         [self addSubview:shareButtonView];
         
@@ -309,10 +282,13 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
             YLShareButtonView* view = (YLShareButtonView*)_shareBtns[i];
             CGPoint vP = view.center;
             CGFloat ang = [self angleForCenterPoint:center andPoint1:point andPoint2:vP];
-            if (minAng > ang) {
+            if (minAng >= ang) {
                 selectedView = view;
                 selected = i;
                 minAng = ang;
+                view.tintColor = self.selectedColor;
+            } else {
+                view.tintColor = self.tintColor;
             }
         }
         if (minAng <= _avgAng && !_isDone) {
@@ -322,7 +298,9 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
                     _selectedView = nil;
                 }
                 _selectedView = selectedView;
-                [_selectedView selectAnimation];
+                //[_selectedView selectAnimation];
+                
+
                 //[_selectTimer invalidate];
                 //_selectTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(doneSelected) userInfo:nil repeats:NO];
             }

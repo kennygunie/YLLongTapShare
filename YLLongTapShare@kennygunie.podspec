@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.social_media_url   = "http://twitter.com/kennygunie"
 
   s.platform     = :ios, "6.0"
-  s.source       = { :git => "https://github.com/kennygunie/YLLongTapShare.git", :tag => "v#{s.version}" }
+  s.source       = { :git => "https://github.com/kennygunie/YLLongTapShare.git", :tag => s.version.to_s }
 
   s.source_files  = "YLLongTapShareControl", "YLLongTapShareControl/**/*.{h,m}"
   s.exclude_files = "Classes/Exclude"

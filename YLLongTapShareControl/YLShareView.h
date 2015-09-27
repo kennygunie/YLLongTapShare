@@ -13,27 +13,16 @@ typedef NS_ENUM(NSUInteger, YLShareViewState) {
     YLShareViewOpened,
 };
 
-@interface YLShareItem : NSObject
-
-@property (nonatomic) UIImage* icon;
-@property (nonatomic) NSString* title;
-
-+ (YLShareItem*)itemWithImageNamed:(NSString *)imageName
-                          andTitle:(NSString *)title;
-
-+ (YLShareItem*)itemWithImageNamed:(NSString *)imageName
-                          andTitle:(NSString *)title
-                        shouldTint:(BOOL)shouldTint;
-
-@end
+@class YLShareItem;
 
 typedef void (^SelectedHandler)(NSUInteger index, YLShareItem* item);
 
 @interface YLShareView : UIView
 
 @property (nonatomic, readonly) YLShareViewState state;
-@property (nonatomic) UIFont *titleFont;
 @property (nonatomic) CGFloat distance;
+@property (nonatomic) UIFont *titleFont;
+@property (nonatomic) UIColor *selectedColor;
 
 - (instancetype)initWithShareItems:(NSArray*)shareItems;
 - (void)showShareViewInView:(UIView*)view at:(CGPoint)point;

@@ -14,6 +14,7 @@
 @property (nonatomic, weak) id<YLLongTapShareDelegate> delegate;
 @property (nonatomic) CGFloat distance;
 @property (nonatomic) UIFont *titleFont;
+@property (nonatomic) UIColor *selectedColor;
 
 - (void)addShareItem:(YLShareItem*)item;
 
