@@ -263,6 +263,13 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
     return result;
 }
 
+- (void)resetButtonColors {
+    for (int i=0; i<_shareBtns.count; i++) {
+        YLShareButtonView* view = (YLShareButtonView*)_shareBtns[i];
+         view.tintColor = self.tintColor;
+    }
+}
+
 - (void)slideTo:(CGPoint)point {
     if (_preventSlide) {
         return;
@@ -286,40 +293,43 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
             CGPoint vP = view.center;
             CGFloat ang = [self angleForCenterPoint:center andPoint1:point andPoint2:vP];
             
-            NSLog(@"%i, ang = %f, vP(%f,%f), point(%f,%f)",i, ang, vP.x, vP.y, point.x, point.y);
-    
+            //NSLog(@"%i, ang = %f, vP(%f,%f), point(%f,%f)",i, ang, vP.x, vP.y, point.x, point.y);
+            
             if (minAng > ang) {
                 selectedView = view;
                 selected = i;
                 minAng = ang;
-//                view.tintColor = self.selectedColor;
+                view.tintColor = self.selectedColor;
             }
-//            else {
-//                view.tintColor = self.tintColor;
-//            }
+            else {
+                view.tintColor = self.tintColor;
+            }
         }
         if (minAng <= _avgAng && !_isDone) {
             if (_selectedView != selectedView) {
                 if (_selectedView) {
                     [_selectedView resetAnimation];
+                    //[self resetButtonColors];
                     _selectedView = nil;
                 }
                 _selectedView = selectedView;
-                [_selectedView selectAnimation];
+                //[_selectedView selectAnimation];
                 
-
+                
                 //[_selectTimer invalidate];
                 //_selectTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(doneSelected) userInfo:nil repeats:NO];
             }
         } else {
             [_selectedView resetAnimation];
             _selectedView = nil;
+            [self resetButtonColors];
             //[_selectTimer invalidate];
             //_selectTimer = nil;
         }
     } else {
         [_selectedView resetAnimation];
         _selectedView = nil;
+        //[self resetButtonColors];
         //[_selectTimer invalidate];
         //_selectTimer = nil;
     }
