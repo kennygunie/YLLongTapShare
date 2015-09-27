@@ -36,7 +36,6 @@
         [shareView addShareItem:[YLShareItem itemWithImageNamed:@"pinterest" andTitle:@"Pinterest" shouldTint:YES]];
         [shareView addShareItem:[YLShareItem itemWithImageNamed:@"facebook" andTitle:@"Facebook" shouldTint:YES]];
         [shareView addShareItem:[YLShareItem itemWithImageNamed:@"instagram" andTitle:@"Instagram" shouldTint:YES]];
-        [shareView addShareItem:[YLShareItem itemWithImageNamed:@"pinterest" andTitle:@"Pinterest" shouldTint:YES]];
     }
     
     

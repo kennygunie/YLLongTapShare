@@ -25,6 +25,7 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
 @property (nonatomic, readwrite) YLShareViewState state;
 //@property (nonatomic, copy) SelectedHandler completionHandler;
 @property (nonatomic) YLShareViewPosition shareViewPosition;
+
 @end
 
 @implementation YLShareView {
@@ -123,7 +124,6 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
                 break;
         }
         [_shareBtns addObject:shareButtonView];
-        
     }
 }
 
@@ -277,19 +277,23 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
         
         YLShareButtonView* selectedView;
         NSInteger selected = -1;
-        CGFloat minAng = 2*M_PI;
+        CGFloat minAng = M_PI;
         for (int i=0; i<_shareBtns.count; i++) {
             YLShareButtonView* view = (YLShareButtonView*)_shareBtns[i];
             CGPoint vP = view.center;
             CGFloat ang = [self angleForCenterPoint:center andPoint1:point andPoint2:vP];
-            if (minAng >= ang) {
+            
+            NSLog(@"%i, ang = %f, vP(%f,%f), point(%f,%f)",i, ang, vP.x, vP.y, point.x, point.y);
+    
+            if (minAng > ang) {
                 selectedView = view;
                 selected = i;
                 minAng = ang;
-                view.tintColor = self.selectedColor;
-            } else {
-                view.tintColor = self.tintColor;
+//                view.tintColor = self.selectedColor;
             }
+//            else {
+//                view.tintColor = self.tintColor;
+//            }
         }
         if (minAng <= _avgAng && !_isDone) {
             if (_selectedView != selectedView) {
@@ -298,7 +302,7 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
                     _selectedView = nil;
                 }
                 _selectedView = selectedView;
-                //[_selectedView selectAnimation];
+                [_selectedView selectAnimation];
                 
 
                 //[_selectTimer invalidate];
