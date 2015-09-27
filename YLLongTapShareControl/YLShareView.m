@@ -164,14 +164,17 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
 
 - (void)setTintColor:(UIColor *)tintColor {
     [super setTintColor:tintColor];
-    _layer.strokeColor = self.tintColor.CGColor;
-    _bgLayer.fillColor = [self.tintColor colorWithAlphaComponent:0.8].CGColor;
-    _bgLayer.strokeColor = self.tintColor.CGColor;
-    _btnLayer.fillColor = self.tintColor.CGColor;
-    _btnLayer.strokeColor = self.tintColor.CGColor;
     for (YLShareButtonView* view in _shareBtns) {
         view.tintColor = self.tintColor;
     }
+}
+
+-(void)setButtonColor:(UIColor *)buttonColor {
+    _layer.strokeColor = buttonColor.CGColor;
+    _bgLayer.fillColor = [buttonColor colorWithAlphaComponent:0.8].CGColor;
+    _bgLayer.strokeColor = buttonColor.CGColor;
+    _btnLayer.fillColor = buttonColor.CGColor;
+    _btnLayer.strokeColor = buttonColor.CGColor;
 }
 
 - (void)layoutSubviews {

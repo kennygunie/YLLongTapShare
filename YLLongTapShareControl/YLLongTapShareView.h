@@ -15,6 +15,7 @@
 @property (nonatomic) CGFloat distance;
 @property (nonatomic) UIFont *titleFont;
 @property (nonatomic) UIColor *selectedColor;
+@property (nonatomic) UIColor *buttonColor;
 
 - (void)addShareItem:(YLShareItem*)item;
 

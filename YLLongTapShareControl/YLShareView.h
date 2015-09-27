@@ -23,6 +23,7 @@ typedef void (^SelectedHandler)(NSUInteger index, YLShareItem* item);
 @property (nonatomic) CGFloat distance;
 @property (nonatomic) UIFont *titleFont;
 @property (nonatomic) UIColor *selectedColor;
+@property (nonatomic) UIColor *buttonColor;
 
 - (instancetype)initWithShareItems:(NSArray*)shareItems;
 - (void)showShareViewInView:(UIView*)view at:(CGPoint)point;
