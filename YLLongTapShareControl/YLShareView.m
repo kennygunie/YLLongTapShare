@@ -308,26 +308,34 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
         if (minAng <= _avgAng && !_isDone) {
             if (_selectedView != selectedView) {
                 if (_selectedView) {
-                    [_selectedView resetAnimation];
+                    if (self.animatedSelection) {
+                        [_selectedView resetAnimation];
+                    }
                     //[self resetButtonColors];
                     _selectedView = nil;
                 }
                 _selectedView = selectedView;
-                [_selectedView selectAnimation];
+                if (self.animatedSelection) {
+                    [_selectedView selectAnimation];
+                }
                 
                 
                 //[_selectTimer invalidate];
                 //_selectTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(doneSelected) userInfo:nil repeats:NO];
             }
         } else {
-            [_selectedView resetAnimation];
+            if (self.animatedSelection) {
+                [_selectedView resetAnimation];
+            }
             _selectedView = nil;
             [self resetButtonColors];
             //[_selectTimer invalidate];
             //_selectTimer = nil;
         }
     } else {
-        [_selectedView resetAnimation];
+        if (self.animatedSelection) {
+            [_selectedView resetAnimation];
+        }
         _selectedView = nil;
         //[self resetButtonColors];
         //[_selectTimer invalidate];

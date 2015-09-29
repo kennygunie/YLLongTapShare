@@ -16,6 +16,7 @@
 @property (nonatomic) UIFont *titleFont;
 @property (nonatomic) UIColor *selectedColor;
 @property (nonatomic) UIColor *buttonColor;
+@property (nonatomic) BOOL animatedSelection;
 
 - (void)addShareItem:(YLShareItem*)item;
 

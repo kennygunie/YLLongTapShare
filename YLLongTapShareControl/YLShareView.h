@@ -24,6 +24,7 @@ typedef void (^SelectedHandler)(NSUInteger index, YLShareItem* item);
 @property (nonatomic) UIFont *titleFont;
 @property (nonatomic) UIColor *selectedColor;
 @property (nonatomic) UIColor *buttonColor;
+@property (nonatomic) BOOL animatedSelection;
 
 - (instancetype)initWithShareItems:(NSArray*)shareItems;
 - (void)showShareViewInView:(UIView*)view at:(CGPoint)point;

@@ -45,6 +45,7 @@
             self.shareView.selectedColor = self.selectedColor;
             self.shareView.tintColor = self.tintColor;
             self.shareView.buttonColor = self.buttonColor;
+            self.shareView.animatedSelection = self.animatedSelection;
             [self.shareView showShareViewInView:self at:touchPoint];
         }
     }
