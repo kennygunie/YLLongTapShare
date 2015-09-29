@@ -313,7 +313,7 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
                     _selectedView = nil;
                 }
                 _selectedView = selectedView;
-                //[_selectedView selectAnimation];
+                [_selectedView selectAnimation];
                 
                 
                 //[_selectTimer invalidate];
