@@ -52,10 +52,10 @@
     _iconView = [[UIImageView alloc] initWithImage:_shareIcon];
     _iconView.contentMode = UIViewContentModeScaleAspectFit;
     _iconView.backgroundColor = [UIColor clearColor];
-    _iconView.layer.shadowColor = [UIColor blackColor].CGColor;
-    _iconView.layer.shadowOpacity = 1.0f;
-    _iconView.layer.shadowRadius = 1.5f;
-    _iconView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+//    _iconView.layer.shadowColor = [UIColor blackColor].CGColor;
+//    _iconView.layer.shadowOpacity = 1.0f;
+//    _iconView.layer.shadowRadius = 1.5f;
+//    _iconView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
     
     _doneMarkLabel = [[UILabel alloc] init];
     _doneMarkLabel.text = @"✔︎";

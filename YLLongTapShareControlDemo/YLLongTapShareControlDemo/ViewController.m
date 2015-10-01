@@ -31,7 +31,7 @@
         shareView.titleFont = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:24.f];
         shareView.selectedColor = [UIColor redColor];
         shareView.tintColor = [UIColor greenColor];
-        shareView.buttonColor = [UIColor whiteColor];
+        shareView.buttonColor = [UIColor redColor];
         shareView.animatedSelection = YES;
         [shareView addShareItem:[YLShareItem itemWithImageNamed:@"facebook" andTitle:@"Facebook" shouldTint:YES]];
         [shareView addShareItem:[YLShareItem itemWithImageNamed:@"instagram" andTitle:@"Instagram" shouldTint:YES]];

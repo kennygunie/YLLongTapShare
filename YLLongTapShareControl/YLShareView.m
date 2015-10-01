@@ -142,8 +142,8 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
         [self.layer addSublayer:_layer];
         
         _bgLayer = [CAShapeLayer layer];
-        _bgLayer.fillColor = [self.tintColor colorWithAlphaComponent:0.8].CGColor;
-        _bgLayer.strokeColor = self.tintColor.CGColor;
+        //_bgLayer.fillColor = [self.tintColor colorWithAlphaComponent:0.8].CGColor;
+        //_bgLayer.strokeColor = self.tintColor.CGColor;
         _bgLayer.lineWidth = 2;
         [self.layer addSublayer:_bgLayer];
         _bgLayer.anchorPoint = CGPointMake(0.5, 0.5);
@@ -171,8 +171,9 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
 
 -(void)setButtonColor:(UIColor *)buttonColor {
     _layer.strokeColor = buttonColor.CGColor;
-    _bgLayer.fillColor = [buttonColor colorWithAlphaComponent:0.8].CGColor;
-    _bgLayer.strokeColor = buttonColor.CGColor;
+    //_bgLayer.fillColor = [self.tintColor colorWithAlphaComponent:0.8].CGColor;
+    _bgLayer.fillColor = self.tintColor.CGColor;
+    _bgLayer.strokeColor = self.tintColor.CGColor;
     _btnLayer.fillColor = buttonColor.CGColor;
     _btnLayer.strokeColor = buttonColor.CGColor;
 }
