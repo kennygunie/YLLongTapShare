@@ -56,10 +56,10 @@
     [_iconView.layer addShadow];
     
     _doneMarkLabel = [[UILabel alloc] init];
-    _doneMarkLabel.text = @"✔︎";
+    _doneMarkLabel.font = [UIFont systemFontOfSize:50];
+    _doneMarkLabel.text = @"★";
     _doneMarkLabel.textColor = [UIColor grayColor];
     _doneMarkLabel.backgroundColor = [UIColor clearColor];
-    _doneMarkLabel.font = [UIFont systemFontOfSize:40];
     _doneMarkLabel.textAlignment = NSTextAlignmentCenter;
     _doneMarkLabel.hidden = YES;
     
