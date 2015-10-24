@@ -12,6 +12,7 @@
 #import "OMVector.h"
 #import "YLShareAnimationHelper.h"
 #import "YLShareItem.h"
+#import "CALayer+Utils.h"
 
 typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
     YLShareViewPositionTop = 0,
@@ -174,8 +175,10 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
     //_bgLayer.fillColor = [self.tintColor colorWithAlphaComponent:0.8].CGColor;
     _bgLayer.fillColor = self.tintColor.CGColor;
     _bgLayer.strokeColor = self.tintColor.CGColor;
+    [_bgLayer addShadow];
     _btnLayer.fillColor = buttonColor.CGColor;
     _btnLayer.strokeColor = buttonColor.CGColor;
+    [_btnLayer addShadow];
 }
 
 - (void)layoutSubviews {
