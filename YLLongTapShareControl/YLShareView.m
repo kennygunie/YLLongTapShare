@@ -290,7 +290,6 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
         dis = radius;
         
         YLShareButtonView* selectedView;
-        NSInteger selected = -1;
         CGFloat minAng = M_PI;
         for (int i=0; i<_shareBtns.count; i++) {
             YLShareButtonView* view = (YLShareButtonView*)_shareBtns[i];
@@ -301,7 +300,6 @@ typedef NS_ENUM(NSUInteger, YLShareViewPosition) {
             
             if (minAng > ang) {
                 selectedView = view;
-                selected = i;
                 minAng = ang;
                 view.tintColor = self.selectedColor;
             }
