@@ -47,6 +47,9 @@
             self.shareView.buttonColor = self.buttonColor;
             self.shareView.animatedSelection = self.animatedSelection;
             [self.shareView showShareViewInView:self at:touchPoint];
+            if ([self.delegate respondsToSelector:@selector(didShow)]) {
+                [self.delegate didShow];
+            }
         }
     }
 }

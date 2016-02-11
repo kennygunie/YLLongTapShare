@@ -41,7 +41,7 @@ typedef void (^SelectedHandler)(NSUInteger index, YLShareItem* item);
 @optional
 
 //- (UIColor*)colorOfShareView;
-
+- (void)didShow;
 - (void)longTapShareView:(UIView*)view didSelectShareTo:(YLShareItem*)item withIndex:(NSUInteger)index;
 
 @end
